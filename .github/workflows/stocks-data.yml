@@ -1,6 +1,7 @@
 name: Update stocks data
 
-# Refreshes stocks-data.json (the website's embedded dashboard data) on
+# Refreshes the website's embedded dashboard data (stocks-data.json,
+# stocks-graph.json, stocks-fundamental.json, stocks-earnings.json) on
 # weekday afternoons after the US market close. Commits only when values change.
 # Manual runs: Actions tab -> "Update stocks data" -> Run workflow.
 
@@ -23,13 +24,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Refresh stocks-data.json
+      - name: Refresh stocks data
         run: python3 update-stocks-data.py
 
       - name: Commit and push if changed
         run: |
           git config user.name "stocks-bot"
           git config user.email "stocks-bot@users.noreply.github.com"
-          git add stocks-data.json
+          git add stocks-data.json stocks-graph.json stocks-fundamental.json stocks-earnings.json
           git diff --cached --quiet || git commit -m "Update stocks data (automated)"
           git push
