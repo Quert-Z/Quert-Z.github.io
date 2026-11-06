@@ -7273,6 +7273,9 @@ var PD = {
     if (/stock vs etf|stocks vs etf|how much.*stock.*etf|portfolio.*stock.*etf/.test(q)) {
       return "Most people recommend having 100% ETF if you have little to no experience with stock picking. However, I use a 50/50 split of stock to etf so that way I get the best of both.";
     }
+    if (/never sell|why.*sell.*position|sell my stock/.test(q)) {
+      return "If you are investing into good high quality companies, they will always follow their core fundamental in terms of stock and eps growth. Meaning that if you have selected the right companies, over the long term, it is always best to hold onto them because they gain intrinsic value over time and the fundamentals and stock price will grow with it.";
+    }
     if (/filing|10-q|10-k|8-k|\bsec\b/.test(q)) {
       var lines = ["Most recent SEC filings in the snapshot:"];
       FILS.slice(0, 4).forEach(function (f) {
