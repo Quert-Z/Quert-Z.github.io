@@ -1057,6 +1057,23 @@
         line-height: 1.45;
         margin: 0 0 12px;
       }
+      #stocksView .sdemo .val-sort { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 12px; }
+      #stocksView .sdemo .vpill {
+        font: inherit;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--chip-line);
+        background: transparent;
+        color: var(--ink-soft);
+        cursor: pointer;
+      }
+      #stocksView .sdemo .vpill.active {
+        background: var(--card);
+        color: var(--ink);
+        border-color: var(--accent);
+      }
       #stocksView .sdemo .sec-h {
         font-size: 13px;
         font-weight: 800;
@@ -2156,7 +2173,12 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
           <section class="view" id="view-valuation">
             <div class="scroll">
               <h2 class="sec-title">Valuation</h2>
-              <p class="sec-note">Sorted by core operational P/E, lowest first · prices as of <span id="valAsOf">Oct 30, 2026</span>. Tap a row for the full breakdown.</p>
+              <p class="sec-note"><span id="valSortLabel">Sorted by core operational P/E, lowest first</span> · prices as of <span id="valAsOf">Oct 30, 2026</span>. Tap a row for the full breakdown.</p>
+              <div class="val-sort" id="valSort" role="group" aria-label="Sort valuation">
+                <button type="button" class="vpill active" data-sort="core">Operational P/E ↑</button>
+                <button type="button" class="vpill" data-sort="fwd">Forward P/E</button>
+                <button type="button" class="vpill" data-sort="avg">Average P/E</button>
+              </div>
               <div id="valList"><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for NFLX"><div class="vrow-top"><div><span class="vtick">NFLX</span><span class="vname">Netflix</span></div><div><div class="vprice">$62.08</div><div class="vchg pos">+0.0%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">16.7x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">17.3x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">17.0x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+11.8%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$254.9B</b></div><div class="drow"><span>Enterprise value</span><b>$259.4B</b></div><div class="drow"><span>TTM operating income</span><b>$15.6B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+11.8% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:0.0%"></span></div><div class="range-labels"><span>$62.48</span><span>$116.73</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for META"><div class="vrow-top"><div><span class="vtick">META</span><span class="vname">Meta Platforms</span></div><div><div class="vprice">$614.99</div><div class="vchg neg">-1.5%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">19.8x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">18.6x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">19.2x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+26.0%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$1.57T</b></div><div class="drow"><span>Enterprise value</span><b>$1.57T</b></div><div class="drow"><span>TTM operating income</span><b>$79.4B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+26.0% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:36.5%"></span></div><div class="range-labels"><span>$520.26</span><span>$779.82</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for GOOG"><div class="vrow-top"><div><span class="vtick">GOOG</span><span class="vname">Alphabet Class C</span></div><div><div class="vprice">$278.22</div><div class="vchg neg">-1.5%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">20.9x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">20.2x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">20.5x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+24.7%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$3.42T</b></div><div class="drow"><span>Enterprise value</span><b>$3.28T</b></div><div class="drow"><span>TTM operating income</span><b>$157B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+24.7% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:9.7%"></span></div><div class="range-labels"><span>$264.28</span><span>$408.61</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for UBER"><div class="vrow-top"><div><span class="vtick">UBER</span><span class="vname">Uber</span></div><div><div class="vprice">$65.25</div><div class="vchg neg">-0.7%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">21.0x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">16.1x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">18.5x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+12.2%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$133.3B</b></div><div class="drow"><span>Enterprise value</span><b>$140.6B</b></div><div class="drow"><span>TTM operating income</span><b>$6.7B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+12.2% · Q2 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:0.0%"></span></div><div class="range-labels"><span>$65.41</span><span>$100.35</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for MSFT"><div class="vrow-top"><div><span class="vtick">MSFT</span><span class="vname">Microsoft</span></div><div><div class="vprice">$521.97</div><div class="vchg neg">-1.5%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">23.6x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">25.1x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">24.4x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+18.8%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$3.88T</b></div><div class="drow"><span>Enterprise value</span><b>$3.85T</b></div><div class="drow"><span>TTM operating income</span><b>$163.2B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+18.8% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:84.5%"></span></div><div class="range-labels"><span>$349.20</span><span>$553.72</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for AMZN"><div class="vrow-top"><div><span class="vtick">AMZN</span><span class="vname">Amazon</span></div><div><div class="vprice">$240.35</div><div class="vchg neg">-1.4%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">25.5x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">24.3x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">24.9x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+12.1%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$2.60T</b></div><div class="drow"><span>Enterprise value</span><b>$2.66T</b></div><div class="drow"><span>TTM operating income</span><b>$104.4B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+12.1% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:48.6%"></span></div><div class="range-labels"><span>$196.00</span><span>$287.20</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for V"><div class="vrow-top"><div><span class="vtick">V</span><span class="vname">Visa</span></div><div><div class="vprice">$413.59</div><div class="vchg pos">+0.7%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">27.7x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">27.5x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">27.6x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+14.4%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$738B</b></div><div class="drow"><span>Enterprise value</span><b>$748.1B</b></div><div class="drow"><span>TTM operating income</span><b>$27B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+14.4% · Q2 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:80.7%"></span></div><div class="range-labels"><span>$293.89</span><span>$442.23</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for MA"><div class="vrow-top"><div><span class="vtick">MA</span><span class="vname">Mastercard</span></div><div><div class="vprice">$638.01</div><div class="vchg pos">+0.4%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">27.9x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">28.7x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">28.3x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+14.1%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$558.9B</b></div><div class="drow"><span>Enterprise value</span><b>$571.9B</b></div><div class="drow"><span>TTM operating income</span><b>$20.5B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+14.1% · Q2 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:100.0%"></span></div><div class="range-labels"><span>$464.52</span><span>$633.29</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for SPY"><div class="vrow-top"><div><span class="vtick">SPY</span><span class="vname">S&amp;P 500 benchmark</span></div><div><div class="vprice">$755.69</div><div class="vchg neg">-1.8%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">28.0x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">—</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">28.0x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+15.5%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$7.58T</b></div><div class="drow"><span>Enterprise value</span><b>$7.58T</b></div><div class="drow"><span>TTM operating income</span><b>$271.3B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+15.5% · Q2 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:83.0%"></span></div><div class="range-labels"><span>$629.28</span><span>$781.62</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div><div class="vrow" role="button" tabindex="0" aria-label="Toggle details for ASML"><div class="vrow-top"><div><span class="vtick">ASML</span><span class="vname">ASML Holding</span></div><div><div class="vprice">$1,565.90</div><div class="vchg neg">-6.6%</div></div></div><div class="vgrid"><div class="cell"><div class="k">Core P/E</div><div class="v">34.5x</div></div><div class="cell"><div class="k">Fwd P/E</div><div class="v">24.8x</div></div><div class="cell"><div class="k">Avg P/E</div><div class="v">29.6x</div></div><div class="cell"><div class="k">Rev growth</div><div class="v">+55.2%</div></div></div><div class="vdetail"><div class="drow"><span>Market cap</span><b>$599.9B</b></div><div class="drow"><span>Enterprise value</span><b>$589.7B</b></div><div class="drow"><span>TTM operating income</span><b>$17.1B</b></div><div class="drow"><span>Revenue growth Y/Y</span><b>+55.2% · Q3 2026</b></div><div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div><div class="rangebar"><span class="dot" style="left:80.9%"></span></div><div class="range-labels"><span>$822.20</span><span>$1,741.00</span></div><div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of Oct 30, 2026</div></div></div></div>
               <p class="fineprint" id="valFormula">Core operational P/E — Company enterprise value ÷ TTM operating income; index level ÷ aggregate earnings per index share for SPY</p>
             </div>
@@ -6542,12 +6564,28 @@ var PD = {
       date: s.marketDate
     };
   }
+  var valSortKey = "core";
+  var valSortDir = 1;
+  function avgPeVal(s) {
+    if (s.avgJson != null) return Number(s.avgJson);
+    if (s.core != null && s.fwd != null) return (s.core + s.fwd) / 2;
+    if (s.core != null) return s.core;
+    return null;
+  }
+  function valSortVal(s, key) {
+    if (key === "fwd") return s.fwd;
+    if (key === "avg") return avgPeVal(s);
+    return s.core;
+  }
   function liveValList() {
-    if (typeof DATA === "undefined" || !DATA.stocks) return PD.valuation.slice();
-    return DATA.stocks.map(valShape).sort(function (a, b) {
-      var ac = a.core == null ? Infinity : a.core;
-      var bc = b.core == null ? Infinity : b.core;
-      return ac - bc || a.t.localeCompare(b.t);
+    var rows = (typeof DATA === "undefined" || !DATA.stocks) ? PD.valuation.slice() : DATA.stocks.map(valShape);
+    var key = valSortKey, dir = valSortDir;
+    return rows.sort(function (a, b) {
+      var av = valSortVal(a, key), bv = valSortVal(b, key);
+      if (av == null && bv == null) return a.t.localeCompare(b.t);
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      return (av - bv) * dir || a.t.localeCompare(b.t);
     });
   }
   var valByT = {};
@@ -7420,6 +7458,21 @@ var PD = {
   function renderValuation() {
     rebuildValByT();
     var list = liveValList();
+    var sortNames = {core: "core operational P/E", fwd: "forward P/E", avg: "average P/E"};
+    var sortLabel = byId("valSortLabel");
+    if (sortLabel) sortLabel.textContent = "Sorted by " + sortNames[valSortKey] + ", " + (valSortDir === 1 ? "lowest first" : "highest first");
+    var sortWrap = byId("valSort");
+    if (sortWrap) {
+      var sBtns = sortWrap.querySelectorAll(".vpill");
+      var sBtnNames = {core: "Operational P/E", fwd: "Forward P/E", avg: "Average P/E"};
+      for (var bi = 0; bi < sBtns.length; bi++) {
+        (function (btn) {
+          var k = btn.getAttribute("data-sort");
+          btn.classList.toggle("active", k === valSortKey);
+          btn.textContent = sBtnNames[k] + (k === valSortKey ? (valSortDir === 1 ? " \u2191" : " \u2193") : "");
+        })(sBtns[bi]);
+      }
+    }
     var html = "";
     list.forEach(function (s) {
       var pos = (s.chg || 0) >= 0;
@@ -7447,6 +7500,23 @@ var PD = {
     }
   }
   window.__valRender = renderValuation;
+  (function () {
+    var wrap = byId("valSort");
+    if (!wrap) return;
+    var btns = wrap.querySelectorAll(".vpill");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function () {
+        var k = this.getAttribute("data-sort");
+        if (k === valSortKey) {
+          valSortDir = -valSortDir;
+        } else {
+          valSortKey = k;
+          valSortDir = 1;
+        }
+        renderValuation();
+      });
+    }
+  })();
   var graphTicker = "MSFT";
   var graphCount = 53;
   function buildPicker(elId, order, active, onPick) {
