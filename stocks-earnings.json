@@ -1,0 +1,810 @@
+{
+  "as_of": "2026-10-30",
+  "notes": {
+    "calendar_source": "Next earnings dates verified by web search Nov 5, 2026 (aggregator estimates; ASML is company-scheduled, pre-market). No free API provides reliable earnings dates: stockanalysis.com's earnings API returns empty data, Nasdaq's calendar API only covers near-term dates, and Yahoo calendarEvents is untested from the sandbox. The Action carries dates forward and updates them only when a filing or press release confirms a new date - dates are never invented.",
+    "filings_source": "EDGAR submissions for the 6 covered stocks (GOOG, META, AMZN, MSFT, NFLX, UBER), forms 8-K / 10-Q / 10-K / 4 / 13D / 13G. MA/V/ASML filings appear only if already in the seed - no new coverage for them.",
+    "filings_seed": "94 filings: 89 from the dashboard filings log (Oct 21-Nov 6, 2026) + 11 backfilled from EDGAR submissions (pre-Oct 21, newest first), minus 6 S&P Global filings removed Nov 6, 2026 when the ticker left the website dashboard."
+  },
+  "calendar": [
+    {
+      "ticker": "GOOG",
+      "date": "2027-02-03",
+      "status": "estimated"
+    },
+    {
+      "ticker": "META",
+      "date": "2027-01-27",
+      "status": "estimated"
+    },
+    {
+      "ticker": "AMZN",
+      "date": "2027-02-04",
+      "status": "estimated"
+    },
+    {
+      "ticker": "MSFT",
+      "date": "2027-01-27",
+      "status": "estimated"
+    },
+    {
+      "ticker": "NFLX",
+      "date": "2027-01-19",
+      "status": "estimated"
+    },
+    {
+      "ticker": "UBER",
+      "date": "2027-02-03",
+      "status": "estimated"
+    },
+    {
+      "ticker": "MA",
+      "date": "2027-01-27",
+      "status": "estimated"
+    },
+    {
+      "ticker": "V",
+      "date": "2027-01-28",
+      "status": "estimated"
+    },
+    {
+      "ticker": "ASML",
+      "date": "2027-01-27",
+      "status": "scheduled"
+    }
+  ],
+  "filings": [
+    {
+      "date": "2026-11-06",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Gregory K. Peters (Co-CEO) \u2014 54,388 shares acquired on RSU vesting (Nov 3) and 27,076 shares withheld for taxes at $62.34; routine, not significant.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000316/0001065280-26-000316-index.htm",
+      "accession": "0001065280-26-000316"
+    },
+    {
+      "date": "2026-11-06",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Form 4: Chief Global Affairs Officer Cletus Willems \u2014 RSUs vested Nov 3 (6,168 shares), tax withholding only, no open-market sale; not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000320/0001065280-26-000320-index.htm",
+      "accession": "0001065280-26-000320"
+    },
+    {
+      "date": "2026-11-06",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Form 4: CFO Spencer Neumann \u2014 RSUs vested Nov 3 (18,428 shares), tax withholding, plus sold 9,253 shares at ~$66.15 (~$612K) on Nov 4; not significant (under $5M threshold)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000318/0001065280-26-000318-index.htm",
+      "accession": "0001065280-26-000318"
+    },
+    {
+      "date": "2026-11-05",
+      "ticker": "MSFT",
+      "form": "8-K",
+      "summary": "Director Emma Walmsley (board since 2019) will not stand for re-election at the 2026 annual meeting; no disagreement with management.",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526448357/0001193125-26-448357-index.htm",
+      "accession": "0001193125-26-448357"
+    },
+    {
+      "date": "2026-11-05",
+      "ticker": "GOOG",
+      "form": "8-K",
+      "summary": "Alphabet closed a \u20ac6B euro-denominated senior notes offering \u2014 seven tranches, 2028\u20132045 maturities, fixed rates 3.700%\u20135.250% plus a floating-rate 2028 tranche.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526449835/0001193125-26-449835-index.htm",
+      "accession": "0001193125-26-449835"
+    },
+    {
+      "date": "2026-11-05",
+      "ticker": "META",
+      "form": "8-K",
+      "summary": "Meta completed a $15B senior notes offering (5 tranches, 5.850%-7.500%, due 2031-2056) and underwriters fully exercised their option for 6M extra Class A shares on top of the 40M-share forward sale announced Oct 26.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526450074/0001193125-26-450074-index.htm",
+      "accession": "0001193125-26-450074"
+    },
+    {
+      "date": "2026-11-05",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Form 4: Co-CEO Ted Sarandos \u2014 RSUs vested Nov 3 (54,388 shares), tax withholding, plus sold 27,312 shares at ~$66.20 (~$1.81M) on Nov 4; not significant (under $5M threshold)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000322/0001065280-26-000322-index.htm",
+      "accession": "0001065280-26-000322"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Jeffrey William Karbowski (Chief Accounting Officer) granted 1,170 non-qualified stock options (code A) at $62.34 on 2026-11-02, expiring 2036-11-02; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000296/0001065280-26-000296-index.htm",
+      "accession": "0001065280-26-000296"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Bradford L. Smith (director) granted 1,003 non-qualified stock options (code A) at $62.34 on 2026-11-02, expiring 2036-11-02; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000294/0001065280-26-000294-index.htm",
+      "accession": "0001065280-26-000294"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Richard N. Barton (director) granted 1,003 non-qualified stock options (code A) at $62.34 on 2026-11-02, expiring 2036-11-02; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000298/0001065280-26-000298-index.htm",
+      "accession": "0001065280-26-000298"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Susan E. Rice (director) granted 1,003 stock options at $62.34, exercisable 11/02/2026",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000300/0001065280-26-000300-index.htm",
+      "accession": "0001065280-26-000300"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Ann Mather (director) granted 1,003 non-qualified stock options (code A) on 2026-11-02; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000304/0001065280-26-000304-index.htm",
+      "accession": "0001065280-26-000304"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Leslie J. Kilgore (director) granted 1,003 non-qualified stock options (code A) on 2026-11-02; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000302/0001065280-26-000302-index.htm",
+      "accession": "0001065280-26-000302"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Director Elinor Mertz granted 1,002 non-qualified stock options @ $62.34 on 2026-11-02 (code A; not significant)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000310/0001065280-26-000310-index.htm",
+      "accession": "0001065280-26-000310"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Director Strive Masiyiwa granted 1,002 non-qualified stock options @ $62.34 on 2026-11-02 (code A; not significant)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000308/0001065280-26-000308-index.htm",
+      "accession": "0001065280-26-000308"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Director Mathias Dopfner granted 1,002 non-qualified stock options @ $62.34 on 2026-11-02 (code A; not significant)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000306/0001065280-26-000306-index.htm",
+      "accession": "0001065280-26-000306"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "UBER",
+      "form": "8-K",
+      "summary": "Q3 2026 earnings 8-K (items 2.02, 5.02, 9.01): revenue $14.8B (+10% y/y) vs ~$14.67B consensus; non-GAAP EPS $0.88 (+35%) vs ~$0.86 consensus; gross bookings $59.8B (+20% constant-currency); Q4 guide bookings $63.25-65.25B, non-GAAP EPS $0.95-0.99. Jill Hazelbaker (President & Chief Corporate Affairs Officer) steps down Nov 30.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000039/0001543151-26-000039-index.htm",
+      "accession": "0001543151-26-000039"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "MSFT",
+      "form": "8-K",
+      "summary": "8-K (items 8.01, 9.01): closed a $25B senior unsecured bond offering in 10 tranches, maturities 2028\u20132066 (fixed rates 4.850%\u20136.350% plus two floating-rate tranches); underwriters J.P. Morgan, UBS, Wells Fargo",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526447173/0001193125-26-447173-index.htm",
+      "accession": "0001193125-26-447173"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Marc L. Andreessen (director) sold 20,951 Class A shares (~$12.8M) on 11/02/2026; not a CEO/CFO/COO sale, below alert threshold \u2014 recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000116007726000013/0001160077-26-000013-index.htm",
+      "accession": "0001160077-26-000013"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "Douglas J. Herrington (CEO Worldwide Amazon Stores) sold 1,000 common shares @ $243.47 (~$243K) on 11/02/2026 under a 10b5-1 plan adopted 11/10/2025; not CEO/CFO/COO \u2014 recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000193600626000028/0001936006-26-000028-index.htm",
+      "accession": "0001936006-26-000028"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "David Hyman (Chief Legal Officer): 11,409 RSU shares vested (11/3), 5,682 withheld for taxes @ $62.34, sold 5,727 shares open-market @ $64.55 (~$370K) on 11/4. Below alert thresholds (not CEO/CFO/COO; sale < $5M).",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000312/0001065280-26-000312-index.htm",
+      "accession": "0001065280-26-000312"
+    },
+    {
+      "date": "2026-11-04",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Javier Olivan (COO) sold 1,575 Class A shares at $614.15 (~$967K) on 2026-11-02 under a Rule 10b5-1 plan \u2014 planned sale, not significant, no alert sent.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326016962/0000950103-26-016962-index.htm",
+      "accession": "0000950103-26-016962"
+    },
+    {
+      "date": "2026-11-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Director Jay C. Hoag granted 1,003 non-qualified stock options (code A) at $62.34 on 2026-11-02, expiring 2036; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000110465926121972/0001104659-26-121972-index.htm",
+      "accession": "0001104659-26-121972"
+    },
+    {
+      "date": "2026-10-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Director Frances H. Arnold sold 82 Class C shares at $284 (~$23K) on 2026-10-29 under a Rule 10b5-1 plan; 19,157 shares held directly after; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526442116/0001193125-26-442116-index.htm",
+      "accession": "0001193125-26-442116"
+    },
+    {
+      "date": "2026-10-29",
+      "ticker": "GOOG",
+      "form": "10-Q",
+      "summary": "Q3 2026 10-Q (period ended 2026-09-30): revenue $127.577B, GAAP EPS $2.12 (dragged by $8.7B paper loss on equity investments), operating income $40.576B; TTM revenue $471.097B, TTM EPS $19.16, core operational P/E now 24.3x \u2014 dashboard updated",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/0001652044-26-000084-index.htm",
+      "accession": "0001652044-26-000084"
+    },
+    {
+      "date": "2026-10-29",
+      "ticker": "AMZN",
+      "form": "8-K",
+      "summary": "Q3 2026 earnings: revenue $201.9B (+12% y/y) vs ~$202B consensus; GAAP EPS $1.89 vs ~$1.97 consensus (Q3 2025 EPS was flattered by a $9.5B Anthropic paper gain); operating income $28.1B, highest-ever 13.9% margin; AWS +39% to $46.0B ($184B run rate), Jassy projects 40%+ AWS growth in both 2027 and 2028; Q4 guide: revenue $240-247B, operating income $28.5-33.5B; 2026 capex still ~$220B; Valuation revenue growth updated to Q3 2026 +12.1%",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000038/0001018724-26-000038-index.htm",
+      "accession": "0001018724-26-000038"
+    },
+    {
+      "date": "2026-10-29",
+      "ticker": "META",
+      "form": "8-K",
+      "summary": "Meta filed an 8-K for two offerings: 250M depositary shares of new 6.50% Series A mandatory convertible preferred stock (closed Oct 29, underwritten by Morgan Stanley and Goldman Sachs), and a 40M-share Class A forward sale at $622.92/share (+6M over-allotment); company gets no cash from the forward sale until settlement (by Nov 2027). Filing also records the new Class C common stock created by the amended charter filed Oct 21, 2026.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526438017/0001193125-26-438017-index.htm",
+      "accession": "0001193125-26-438017"
+    },
+    {
+      "date": "2026-10-29",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Co-CEO Gregory K. Peters gifted 1,519 common shares (code G) on 2026-10-28; 119,412 shares held directly after; recorded, not significant",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000158310926000004/0001583109-26-000004-index.htm",
+      "accession": "0001583109-26-000004"
+    },
+    {
+      "date": "2026-10-29",
+      "ticker": "AMZN",
+      "form": "10-Q",
+      "summary": "Q3 2026 10-Q (period ended 2026-09-30): revenue $201.944B, GAAP EPS $1.89, operating income $28.076B; TTM revenue $797.455B, TTM EPS $12.37, core operational P/E now 25.9x (was 28.2x) \u2014 dashboard updated",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000040/0001018724-26-000040-index.htm",
+      "accession": "0001018724-26-000040"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "CEO Sundar Pichai: 3,671 Class C stock units vested into Class C shares on 2026-10-25, and 3,705 shares withheld at $317.28 to cover taxes on vesting (not an open-market sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434831/0001193125-26-434831-index.htm",
+      "accession": "0001193125-26-434831"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Form 4 insider filing \u2014 content could not be read at poll time, significance not established; recorded silently",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434837/0001193125-26-434837-index.htm",
+      "accession": "0001193125-26-434837"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Kent Walker (President, Global Affairs, CLO): 1,626 Class C stock units vested into Class C shares on 2026-10-25, and 1,641 shares withheld at $317.28 to cover taxes on vesting (not an open-market sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434841/0001193125-26-434841-index.htm",
+      "accession": "0001193125-26-434841"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Philipp Schindler (SVP, Chief Business Officer): 1,998 Class C stock units vested into Class C shares on 2026-10-25, and 2,016 shares withheld at $317.28 to cover taxes on vesting (not an open-market sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434840/0001193125-26-434840-index.htm",
+      "accession": "0001193125-26-434840"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Ruth Porat (President and CIO): 1,626 Class C stock units vested into Class C shares on 2026-10-25, and 1,641 shares withheld at $317.28 to cover taxes on vesting (not an open-market sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434839/0001193125-26-434839-index.htm",
+      "accession": "0001193125-26-434839"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Marsida Saraci (VP, Chief Accounting Officer): 489 Class C stock units vested into Class C shares on 2026-10-25, and 494 shares withheld at $317.28 ($339.01 for one tranche) to cover taxes on vesting (not an open-market sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526434846/0001193125-26-434846-index.htm",
+      "accession": "0001193125-26-434846"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "GOOG",
+      "form": "8-K",
+      "summary": "Q3 2026 earnings: revenue $127.6B (+25% y/y) vs ~$127.9B consensus; GAAP EPS $2.12 vs ~$3.00-3.03 expected, with EPS dragged by an $8.7B paper loss on equity investments ($0.55/share); operating income +30% to $40.6B, Google Cloud +103% to $30.7B; no guidance given (Alphabet does not guide)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/0001652044-26-000080-index.htm",
+      "accession": "0001652044-26-000080"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "MSFT",
+      "form": "8-K",
+      "summary": "Q1 FY2027 earnings (quarter ended Sep 30, 2026): revenue $92.3B (+19% y/y) vs ~$90.6-90.7B consensus; non-GAAP EPS $4.89 (+18%) vs ~$4.71-4.73 consensus (GAAP EPS $4.92); Azure +48% vs ~44-45% guide; Microsoft Cloud $63.9B (+30%); no numeric guidance in release - guidance to come on the 5:30 PM ET call",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526436122/0001193125-26-436122-index.htm",
+      "accession": "0001193125-26-436122"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "MSFT",
+      "form": "10-Q",
+      "summary": "Q3 2026 10-Q (fiscal Q1 FY2027, quarter ended Sep 30, 2026): revenue $92.279B, GAAP EPS $4.92, operating income $45.915B; TTM revenue $346.445B, TTM EPS $19.16, core operational P/E now 24.0x; segment structure changed to Agents and Infra / Devices and Consumer, so the Intelligent Cloud series ends at Q2 2026",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526436133/0001193125-26-436133-index.htm",
+      "accession": "0001193125-26-436133"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "MSFT",
+      "form": "8-K",
+      "summary": "Recast of FY2026 (year ended June 30, 2026) results for the new segment structure \u2014 Agents and Infra, and Devices and Consumer \u2014 announced in September 2026; not a restatement and does not change the audited figures.",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526436149/0001193125-26-436149-index.htm",
+      "accession": "0001193125-26-436149"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Javier Olivan (COO) sold 1,575 Class A shares at $640 on Oct 26, 2026 (~$1.01M) under a Rule 10b5-1 plan adopted Nov 17, 2025 \u2014 planned sale, not significant, no alert",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326016313/0000950103-26-016313-index.htm",
+      "accession": "0000950103-26-016313"
+    },
+    {
+      "date": "2026-10-28",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Peggy Alford (director) sold 390 Class A shares at $640 on Oct 26, 2026 (~$249,600) under a Rule 10b5-1 plan adopted Nov 25, 2025 \u2014 planned sale, not significant, no alert",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326016314/0000950103-26-016314-index.htm",
+      "accession": "0000950103-26-016314"
+    },
+    {
+      "date": "2026-10-27",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Bradford L. Smith (Netflix director) exercised options for 17,980 shares and sold 17,980 shares on 2026-10-26 for ~$1.15M under a Rule 10b5-1 plan adopted 2026-07-24 (planned sale)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000119311926000003/0001193119-26-000003-index.htm",
+      "accession": "0001193119-26-000003"
+    },
+    {
+      "date": "2026-10-22",
+      "ticker": "META",
+      "form": "10-Q",
+      "summary": "10-Q filed - Q3 2026 quarterly report (period ended 2026-09-30); tonight's 8:11 PM ET data watch refreshes the dashboard's META numbers",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/0001628280-26-066773-index.htm",
+      "accession": "0001628280-26-066773"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "Krishnamurthy Balaji (A) (Chief Financial Officer) exercised options for 1,158 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000211186726000014/0002111867-26-000014-index.htm",
+      "accession": "0002111867-26-000014"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "Macdonald Andrew (See Remarks) exercised options for 4,042 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000207176126000013/0002071761-26-000013-index.htm",
+      "accession": "0002071761-26-000013"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "West Tony (See Remarks) exercised options for 2,910 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000162620126000023/0001626201-26-000023-index.htm",
+      "accession": "0001626201-26-000023"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "Hazelbaker Jill (See Remarks) exercised options for 2,546 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000177529726000014/0001775297-26-000014-index.htm",
+      "accession": "0001775297-26-000014"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "Ceremony Glen (See Remarks) exercised options for 1,516 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000152532126000011/0001525321-26-000011-index.htm",
+      "accession": "0001525321-26-000011"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "THAIN JOHN A exercised options for 350 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000109035526000009/0001090355-26-000009-index.htm",
+      "accession": "0001090355-26-000009"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "NFLX",
+      "form": "8-K",
+      "summary": "Earnings release (Item 2.02)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000290/0001065280-26-000290-index.htm",
+      "accession": "0001065280-26-000290"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "NFLX",
+      "form": "10-Q",
+      "summary": "10-Q filed - Q3 2026 quarterly report (period ended 2026-09-30); tonight's 8:11 PM ET data watch refreshes the dashboard's NFLX numbers",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000291/0001065280-26-000291-index.htm",
+      "accession": "0001065280-26-000291"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "META",
+      "form": "8-K",
+      "summary": "Meta Q3 2026 8-K (items 1.01, 2.02, 8.01): revenue $64.60B (+26% y/y) vs $63.29B consensus (top of $61-64B guide); GAAP EPS $3.83 after $9.89B teen-safety legal charge ($7.40 ex-charge vs $6.85 expected); Q4 revenue guide $73-76B; 2026 capex narrowed to $135-145B; board approved new non-voting Class C stock with one-time stock dividend (2-for-1 split effect) effective Jan 19, 2027, plus Founder Alignment Agreement with Zuckerberg.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/0001628280-26-066700-index.htm",
+      "accession": "0001628280-26-066700"
+    },
+    {
+      "date": "2026-10-21",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Form 4: COO Javier Olivan sold 1,575 Class A shares at $707.20 (~$1.11M) on 2026-10-19 \u2014 planned sale under Rule 10b5-1 plan (adopted 2025-11-17)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326015980/0000950103-26-015980-index.htm",
+      "accession": "0000950103-26-015980"
+    },
+    {
+      "date": "2026-10-16",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Shriram Kavitark Ram gifted 199,100 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526423187/0001193125-26-423187-index.htm",
+      "accession": "0001193125-26-423187"
+    },
+    {
+      "date": "2026-10-16",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "Coleman Amy (EVP, Chief Human Resources Off) had withheld (taxes) 31 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000228/0000789019-26-000228-index.htm",
+      "accession": "0000789019-26-000228"
+    },
+    {
+      "date": "2026-10-15",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Olivan Javier (Chief Operating Officer) sold 946 shares @ $728.10",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326015598/0000950103-26-015598-index.htm",
+      "accession": "0000950103-26-015598"
+    },
+    {
+      "date": "2026-10-15",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "Hood Amy (EVP, Chief Financial Officer) sold 3,387 shares @ $544.80",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000226/0000789019-26-000226-index.htm",
+      "accession": "0000789019-26-000226"
+    },
+    {
+      "date": "2026-10-15",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "BURNS URSULA M \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000119069926000005/0001190699-26-000005-index.htm",
+      "accession": "0001190699-26-000005"
+    },
+    {
+      "date": "2026-10-15",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "Arora Nikesh \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000146823326000011/0001468233-26-000011-index.htm",
+      "accession": "0001468233-26-000011"
+    },
+    {
+      "date": "2026-10-15",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "THAIN JOHN A \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000109035526000008/0001090355-26-000008-index.htm",
+      "accession": "0001090355-26-000008"
+    },
+    {
+      "date": "2026-10-08",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Olivan Javier (Chief Operating Officer) sold 946 shares @ $728.08",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326015324/0000950103-26-015324-index.htm",
+      "accession": "0000950103-26-015324"
+    },
+    {
+      "date": "2026-10-06",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "Herrington Douglas J (CEO Worldwide Amazon Stores) sold 1,000 shares @ $251.50",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000193600626000026/0001936006-26-000026-index.htm",
+      "accession": "0001936006-26-000026"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Hoag Jay C \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000110465926113405/0001104659-26-113405-index.htm",
+      "accession": "0001104659-26-113405"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "ARNOLD FRANCES sold 83 shares @ $340.45",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526412669/0001193125-26-412669-index.htm",
+      "accession": "0001193125-26-412669"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Mertz Elinor \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000289/0001065280-26-000289-index.htm",
+      "accession": "0001065280-26-000289"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "RICE SUSAN E \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000288/0001065280-26-000288-index.htm",
+      "accession": "0001065280-26-000288"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "BARTON RICHARD N \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000287/0001065280-26-000287-index.htm",
+      "accession": "0001065280-26-000287"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "MATHER ANN \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000286/0001065280-26-000286-index.htm",
+      "accession": "0001065280-26-000286"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Masiyiwa Strive \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000285/0001065280-26-000285-index.htm",
+      "accession": "0001065280-26-000285"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "KILGORE LESLIE J \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000284/0001065280-26-000284-index.htm",
+      "accession": "0001065280-26-000284"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Dopfner Mathias \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000283/0001065280-26-000283-index.htm",
+      "accession": "0001065280-26-000283"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "Karbowski Jeffrey William \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000282/0001065280-26-000282-index.htm",
+      "accession": "0001065280-26-000282"
+    },
+    {
+      "date": "2026-10-03",
+      "ticker": "NFLX",
+      "form": "4",
+      "summary": "SMITH BRADFORD L \u2014 insider filing (options/grant activity)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000281/0001065280-26-000281-index.htm",
+      "accession": "0001065280-26-000281"
+    },
+    {
+      "date": "2026-10-01",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Olivan Javier (Chief Operating Officer) sold 946 shares @ $750.42",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326014886/0000950103-26-014886-index.htm",
+      "accession": "0000950103-26-014886"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "WALKER JOHN KENT (President, Global Affairs, CLO) transacted 10,631 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408019/0001193125-26-408019-index.htm",
+      "accession": "0001193125-26-408019"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Saraci Marsida (VP, Chief Accounting Officer) transacted 487 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408016/0001193125-26-408016-index.htm",
+      "accession": "0001193125-26-408016"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Porat Ruth (President and CIO) transacted 10,631 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408014/0001193125-26-408014-index.htm",
+      "accession": "0001193125-26-408014"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Ashkenazi Anat (SVP, Chief Financial Officer) transacted 10,154 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408009/0001193125-26-408009-index.htm",
+      "accession": "0001193125-26-408009"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Pichai Sundar (Chief Executive Officer) had withheld (taxes) 3,705 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408007/0001193125-26-408007-index.htm",
+      "accession": "0001193125-26-408007"
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "Schindler Philipp (SVP, Chief Business Officer) transacted 13,442 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526408004/0001193125-26-408004-index.htm",
+      "accession": "0001193125-26-408004"
+    },
+    {
+      "date": "2026-09-29",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Zuckerberg Mark (COB and CEO) transacted 17,140 shares",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326014647/0000950103-26-014647-index.htm",
+      "accession": "0000950103-26-014647"
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Cox Christopher K (Chief Product Officer) sold 20,000 shares @ $725.02",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326014403/0000950103-26-014403-index.htm",
+      "accession": "0000950103-26-014403"
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "META",
+      "form": "4",
+      "summary": "Olivan Javier (Chief Operating Officer) sold 946 shares @ $680.27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326014402/0000950103-26-014402-index.htm",
+      "accession": "0000950103-26-014402"
+    },
+    {
+      "date": "2026-09-18",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "4 \u2014 PRIMARY DOCUMENT",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000152532126000010/0001525321-26-000010-index.htm",
+      "accession": "0001525321-26-000010"
+    },
+    {
+      "date": "2026-09-18",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "4 \u2014 PRIMARY DOCUMENT",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000207176126000012/0002071761-26-000012-index.htm",
+      "accession": "0002071761-26-000012"
+    },
+    {
+      "date": "2026-09-18",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "4 \u2014 PRIMARY DOCUMENT",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000177529726000013/0001775297-26-000013-index.htm",
+      "accession": "0001775297-26-000013"
+    },
+    {
+      "date": "2026-09-18",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "4 \u2014 PRIMARY DOCUMENT",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000211186726000013/0002111867-26-000013-index.htm",
+      "accession": "0002111867-26-000013"
+    },
+    {
+      "date": "2026-09-18",
+      "ticker": "UBER",
+      "form": "4",
+      "summary": "4 \u2014 PRIMARY DOCUMENT",
+      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000162620126000020/0001626201-26-000020-index.htm",
+      "accession": "0001626201-26-000020"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326014140/0000950103-26-014140-index.htm",
+      "accession": "0000950103-26-014140"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000224/0000789019-26-000224-index.htm",
+      "accession": "0000789019-26-000224"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000223/0000789019-26-000223-index.htm",
+      "accession": "0000789019-26-000223"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000222/0000789019-26-000222-index.htm",
+      "accession": "0000789019-26-000222"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000221/0000789019-26-000221-index.htm",
+      "accession": "0000789019-26-000221"
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000220/0000789019-26-000220-index.htm",
+      "accession": "0000789019-26-000220"
+    }
+  ],
+  "filings_count": 94
+}
