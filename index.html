@@ -1262,6 +1262,20 @@
       #stocksView .sdemo .vgrid .cell.hl .v {
         color: var(--bg);
       }
+      /* Stocks intro tour: welcome + one brief screen per bottom tab */
+      #stocksView .sdemo .stocks-intro { position: absolute; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #050505; text-align: center; padding: 28px 26px; opacity: 1; transition: opacity .45s ease; }
+      #stocksView .sdemo .stocks-intro.hide { opacity: 0; pointer-events: none; visibility: hidden; }
+      #stocksView .sdemo .stocks-intro.gone { display: none; }
+      #stocksView .sdemo .si-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+      #stocksView .sdemo .si-screen.active { display: flex; }
+      #stocksView .sdemo .si-icon { width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--ink); }
+      #stocksView .sdemo .si-title { font-size: 27px; font-weight: 800; letter-spacing: -.02em; line-height: 1.18; margin-bottom: 10px; }
+      #stocksView .sdemo .si-text { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); max-width: 280px; margin-bottom: 28px; }
+      #stocksView .sdemo .si-btn { background: var(--ink); color: var(--bg); border: none; border-radius: 999px; padding: 12px 32px; font-size: 15px; font-weight: 700; cursor: pointer; }
+      #stocksView .sdemo .si-dots { display: flex; gap: 7px; margin-top: 28px; }
+      #stocksView .sdemo .si-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+      #stocksView .sdemo .si-dots i.on { background: var(--ink); }
+      #stocksView .sdemo .si-skip { margin-top: 16px; background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; text-decoration: underline; }
       #stocksView .sdemo .vdetail {
         display: none;
         margin-top: 11px;
@@ -2081,6 +2095,45 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
   <div class="sdemo">
 <div class="phone" role="region" aria-label="Stock dashboard">
       <div class="screen">
+      <div class="stocks-intro gone" id="stocksIntro" role="dialog" aria-label="Welcome to Neil's Stock Dashboard">
+        <div class="si-screen active" data-si="0">
+          <div class="si-title">Welcome to<br>Neil's Stock Dashboard</div>
+          <p class="si-text">A quick tour of the five tabs at the bottom.</p>
+          <button class="si-btn" type="button" data-si-next>Get started</button>
+        </div>
+        <div class="si-screen" data-si="1">
+          <div class="si-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10.5 9-7.5 9 7.5"></path><path d="M5.5 9v11a1.5 1.5 0 0 0 1.5 1.5h10A1.5 1.5 0 0 0 18.5 20V9"></path><path d="M9.5 21.5v-6h5v6"></path></svg></div>
+          <div class="si-title">Home</div>
+          <p class="si-text">Ask the chat anything about Neil's stocks and this dashboard.</p>
+          <button class="si-btn" type="button" data-si-next>Next</button>
+        </div>
+        <div class="si-screen" data-si="2">
+          <div class="si-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="m7 14 4-4 3 3 5-6"></path></svg></div>
+          <div class="si-title">Graph Analysis</div>
+          <p class="si-text">Price vs the 50 and 200-day averages, with BUY and HOLD signals.</p>
+          <button class="si-btn" type="button" data-si-next>Next</button>
+        </div>
+        <div class="si-screen" data-si="3">
+          <div class="si-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M7 16v-5"></path><path d="M12 16V8"></path><path d="M17 16v-8"></path></svg></div>
+          <div class="si-title">Fundamental</div>
+          <p class="si-text">Revenue, EPS and growth, quarter by quarter.</p>
+          <button class="si-btn" type="button" data-si-next>Next</button>
+        </div>
+        <div class="si-screen" data-si="4">
+          <div class="si-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path><path d="M7 21h10"></path><path d="M12 3v18"></path><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"></path></svg></div>
+          <div class="si-title">Valuation</div>
+          <p class="si-text">P/E ratios that show what's cheap and what's pricey.</p>
+          <button class="si-btn" type="button" data-si-next>Next</button>
+        </div>
+        <div class="si-screen" data-si="5">
+          <div class="si-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M3 10h18"></path></svg></div>
+          <div class="si-title">Earnings</div>
+          <p class="si-text">Upcoming report dates and the latest SEC filings.</p>
+          <button class="si-btn" type="button" data-si-done>Enter dashboard</button>
+        </div>
+        <div class="si-dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="si-skip" type="button" data-si-skip>Skip tour</button>
+      </div>
         <svg class="rings" viewBox="0 0 560 560" fill="none" aria-hidden="true">
           <circle cx="280" cy="180" r="150" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.4"></circle>
           <circle cx="150" cy="290" r="170" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1.4"></circle>
@@ -7921,12 +7974,52 @@ var PD = {
     view.hidden = true;
     window.scrollTo(0, 0);
   }
+  var siWrap = document.getElementById("stocksIntro");
+  var siScreens = siWrap ? siWrap.querySelectorAll(".si-screen") : [];
+  var siDots = siWrap ? siWrap.querySelectorAll(".si-dots i") : [];
+  var siIdx = 0;
+  var siHideTimer = null;
+  function siShow(i) {
+    if (!siWrap) return;
+    siIdx = Math.max(0, Math.min(i, siScreens.length - 1));
+    for (var k = 0; k < siScreens.length; k++) siScreens[k].classList.toggle("active", k === siIdx);
+    for (var j = 0; j < siDots.length; j++) siDots[j].classList.toggle("on", j === siIdx);
+  }
+  function showStocksIntro() {
+    if (!siWrap) return;
+    if (siHideTimer) { clearTimeout(siHideTimer); siHideTimer = null; }
+    siShow(0);
+    siWrap.classList.remove("gone");
+    void siWrap.offsetWidth;
+    siWrap.classList.remove("hide");
+  }
+  function hideStocksIntro() {
+    if (!siWrap) return;
+    siWrap.classList.add("hide");
+    if (siHideTimer) clearTimeout(siHideTimer);
+    siHideTimer = setTimeout(function () { siWrap.classList.add("gone"); siShow(0); siHideTimer = null; }, 450);
+  }
+  function resetStocksIntro() {
+    if (!siWrap) return;
+    if (siHideTimer) { clearTimeout(siHideTimer); siHideTimer = null; }
+    siWrap.classList.add("gone", "hide");
+    siShow(0);
+  }
+  if (siWrap) {
+    siWrap.addEventListener("click", function (e) {
+      var t = e.target.closest("[data-si-next],[data-si-done],[data-si-skip]");
+      if (!t) return;
+      if (t.hasAttribute("data-si-skip") || t.hasAttribute("data-si-done")) { hideStocksIntro(); return; }
+      siShow(siIdx + 1);
+    });
+  }
   function openStocks(e) {
     if (e) e.preventDefault();
     if (!view || busy || document.body.classList.contains("stocks-open")) return;
     opener = e && e.currentTarget || document.querySelector("[data-stocks-open]");
     if (RM) {
       showStocks();
+      showStocksIntro();
       return;
     }
     busy = true;
@@ -7939,6 +8032,7 @@ var PD = {
     __tunnel.setStyle(view, "opacity", "1");
     setTimeout(function () {
       document.body.classList.add("stocks-open");
+      showStocksIntro();
       view.classList.remove("is-opening");
       __tunnel.setStyle(view, "opacity", "");
       window.scrollTo(0, 0);
@@ -7952,6 +8046,7 @@ var PD = {
     if (!view || busy || !document.body.classList.contains("stocks-open")) return;
     var cm = document.getElementById("chart-modal");
     if (cm && !cm.hidden) return;
+    resetStocksIntro();
     if (RM) {
       hideStocks();
       if (opener) opener.focus({
