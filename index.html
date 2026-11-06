@@ -3837,7 +3837,6 @@ ${v}`;
       setTimeout(sweepAll, 0);
       setTimeout(sweepAll, 50);
       setTimeout(sweepAll, 250);
-      if (!location.href.startsWith("blob:null/")) setTimeout(rewriteAuthoredHtml, 0);
     }
     function rewriteAuthoredHtml() {
       const SELECTORS = "[data-hatch-src], [data-hatch-href], [data-hatch-srcset]";
@@ -4033,6 +4032,7 @@ ${v}`;
     }
     window.addEventListener("message", onParentMessage);
     installDownloadLinks(tunnelFetch, isExternalUrl2, __BLOB_REVOKE_DELAY_MS);
+    if (!location.href.startsWith("blob:null/")) setTimeout(rewriteAuthoredHtml, 0);
     if (document.readyState === "complete" || document.readyState === "interactive") {
       startAnnouncing();
     } else {
