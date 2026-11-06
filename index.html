@@ -2416,7 +2416,7 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg> Shuffle play
       </button>
     </div>
-    <div class="list-tools">
+    <div class="list-tools" id="listTools">
       <div class="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
         <input type="search" id="search" placeholder="Search title or artist…" aria-label="Search tracks" autocomplete="off">
@@ -10617,6 +10617,7 @@ var PD = {
     }
     function renderTracks() {
       tracksTitle.textContent = ctxTitle;
+      __tunnel.setStyle($("listTools"), "display", ctxAlbum ? "none" : "");
       if (ctxAlbum) {
         __tunnel.setUrlProp(bannerImg, "src", albumArtSrc(ctxAlbum));
         __tunnel.setStyle(bannerImg, "display", "");
