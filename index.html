@@ -7065,7 +7065,9 @@ var PD = {
   });
   var CHAT_ENDPOINT = "https://stock-chat.neil143gandhi.workers.dev";
   var chatAsOf = PD.asof;
-  var HOME_CHIPS = ["Which stocks does Neil track?", "What is Neil's investment thesis?", "Is Meta a good buy right now"];
+  var HOME_CHIPS = ["Which stocks does Neil track?", "What is Neil's investment thesis?", "Is Meta a good buy right now", "How much of my portfolio should be stock vs ETF?", "Why should I never sell my stock positions?"];
+  var chipShown = HOME_CHIPS.slice(0, 3);
+  var chipNext = 3;
   var started = false;
   var sending = false;
   var scrollEl = byId("scroll");
@@ -7113,13 +7115,25 @@ var PD = {
   }
   function renderChips() {
     __tunnel.setInnerHTML(chipsEl, "", "innerHTML");
-    HOME_CHIPS.forEach(function (q) {
+    chipShown.forEach(function (q) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "chip";
       b.textContent = q;
       b.addEventListener("click", function () {
         sendMessage(q);
+        var idx = chipShown.indexOf(q);
+        if (idx !== -1) {
+          for (var n = 0; n < HOME_CHIPS.length; n++) {
+            var cand = HOME_CHIPS[chipNext % HOME_CHIPS.length];
+            chipNext = (chipNext + 1) % HOME_CHIPS.length;
+            if (chipShown.indexOf(cand) === -1) {
+              chipShown[idx] = cand;
+              break;
+            }
+          }
+          renderChips();
+        }
       });
       chipsEl.appendChild(b);
     });
