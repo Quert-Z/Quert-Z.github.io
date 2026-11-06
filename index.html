@@ -1254,6 +1254,14 @@
         color: var(--muted);
       }
       #stocksView .sdemo .vgrid .cell .v { font-size: 14px; font-weight: 700; margin-top: 2px; }
+      #stocksView .sdemo .vgrid .cell.hl {
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+      #stocksView .sdemo .vgrid .cell.hl .k,
+      #stocksView .sdemo .vgrid .cell.hl .v {
+        color: var(--bg);
+      }
       #stocksView .sdemo .vdetail {
         display: none;
         margin-top: 11px;
@@ -7477,7 +7485,7 @@ var PD = {
     list.forEach(function (s) {
       var pos = (s.chg || 0) >= 0;
       var rangePct = s.h52 > s.l52 ? Math.max(0, Math.min(100, (s.price - s.l52) / (s.h52 - s.l52) * 100)) : 50;
-      html += '<div class="vrow" role="button" tabindex="0" aria-label="Toggle details for ' + esc(s.t) + '">' + '<div class="vrow-top"><div><span class="vtick">' + esc(s.t) + '</span><span class="vname">' + esc(s.name) + '</span></div>' + '<div><div class="vprice">' + fmtMoney(s.price) + '</div>' + '<div class="vchg ' + (pos ? "pos" : "neg") + '">' + fmtPct(s.chg) + '</div></div></div>' + '<div class="vgrid">' + '<div class="cell"><div class="k">Core P/E</div><div class="v">' + (s.core != null ? s.core.toFixed(1) + "x" : "—") + '</div></div>' + '<div class="cell"><div class="k">Fwd P/E</div><div class="v">' + (s.fwd != null ? s.fwd.toFixed(1) + "x" : "—") + '</div></div>' + '<div class="cell"><div class="k">Avg P/E</div><div class="v">' + avgPe(s) + '</div></div>' + '<div class="cell"><div class="k">Rev growth</div><div class="v">' + fmtPct(s.growth) + '</div></div>' + '</div>' + '<div class="vdetail">' + '<div class="drow"><span>Market cap</span><b>' + fmtB(s.mcap) + '</b></div>' + '<div class="drow"><span>Enterprise value</span><b>' + fmtB(s.ev) + '</b></div>' + '<div class="drow"><span>TTM operating income</span><b>' + fmtB(s.ttmOp) + '</b></div>' + '<div class="drow"><span>Revenue growth Y/Y</span><b>' + fmtPct(s.growth) + ' · ' + esc(s.growthQ || "") + '</b></div>' + '<div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div>' + '<div class="rangebar"><span class="dot" style="left:' + rangePct.toFixed(1) + '%"></span></div>' + '<div class="range-labels"><span>' + fmtMoney(s.l52) + '</span><span>' + fmtMoney(s.h52) + '</span></div>' + '<div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of ' + (s.date ? fmtDate(s.date) : chatAsOf) + '</div>' + '</div></div>';
+      html += '<div class="vrow" role="button" tabindex="0" aria-label="Toggle details for ' + esc(s.t) + '">' + '<div class="vrow-top"><div><span class="vtick">' + esc(s.t) + '</span><span class="vname">' + esc(s.name) + '</span></div>' + '<div><div class="vprice">' + fmtMoney(s.price) + '</div>' + '<div class="vchg ' + (pos ? "pos" : "neg") + '">' + fmtPct(s.chg) + '</div></div></div>' + '<div class="vgrid">' + '<div class="cell' + (valSortKey === "core" ? " hl" : "") + '"><div class="k">Core P/E</div><div class="v">' + (s.core != null ? s.core.toFixed(1) + "x" : "—") + '</div></div>' + '<div class="cell' + (valSortKey === "fwd" ? " hl" : "") + '"><div class="k">Fwd P/E</div><div class="v">' + (s.fwd != null ? s.fwd.toFixed(1) + "x" : "—") + '</div></div>' + '<div class="cell' + (valSortKey === "avg" ? " hl" : "") + '"><div class="k">Avg P/E</div><div class="v">' + avgPe(s) + '</div></div>' + '<div class="cell"><div class="k">Rev growth</div><div class="v">' + fmtPct(s.growth) + '</div></div>' + '</div>' + '<div class="vdetail">' + '<div class="drow"><span>Market cap</span><b>' + fmtB(s.mcap) + '</b></div>' + '<div class="drow"><span>Enterprise value</span><b>' + fmtB(s.ev) + '</b></div>' + '<div class="drow"><span>TTM operating income</span><b>' + fmtB(s.ttmOp) + '</b></div>' + '<div class="drow"><span>Revenue growth Y/Y</span><b>' + fmtPct(s.growth) + ' · ' + esc(s.growthQ || "") + '</b></div>' + '<div style="margin-top:8px; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)">52-week range</div>' + '<div class="rangebar"><span class="dot" style="left:' + rangePct.toFixed(1) + '%"></span></div>' + '<div class="range-labels"><span>' + fmtMoney(s.l52) + '</span><span>' + fmtMoney(s.h52) + '</span></div>' + '<div style="margin-top:7px; font-size:11px; color:var(--muted)">Price as of ' + (s.date ? fmtDate(s.date) : chatAsOf) + '</div>' + '</div></div>';
     });
     __tunnel.setInnerHTML(byId("valList"), html, "innerHTML");
     byId("valFormula").textContent = "Core operational P/E — " + PD.formula;
