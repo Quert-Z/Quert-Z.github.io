@@ -2777,6 +2777,11 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
       return base64ToBytes(b64);
     }
     async function httpReq(method, path, body, headers) {
+      if (!location.href.startsWith("blob:null/")) {
+        const res = await originalFetch(path, {method, headers, body});
+        const buf = new Uint8Array(await res.arrayBuffer());
+        return {status: res.status, headers: [...res.headers.entries()], bytes: buf};
+      }
       const p = port ?? await portReady;
       const id = newId();
       const headerArr = [];
