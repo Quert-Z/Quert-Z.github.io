@@ -2451,13 +2451,6 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg>
         </button>
         <div class="player-menu" id="playerMenu" role="menu" hidden="">
-          <div class="pm-row">
-            <div class="pm-text">
-              <span class="pm-label">Visualizer delay</span>
-              <span class="pm-sub">Delays the ring ~250 ms to match Bluetooth latency</span>
-            </div>
-            <button class="pm-switch on" id="vizDelayToggle" type="button" role="switch" aria-checked="true" aria-label="Visualizer delay"></button>
-          </div>
           <button class="pm-item" id="playerMenuDeploy" type="button" role="menuitem">Add your tracks · Deploy</button>
         </div>
       </div>
@@ -11009,8 +11002,6 @@ var PD = {
       vizBass = 0,
       vizMid = 0;
     var vizReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var VIZ_DELAY_MS = 250;
-    var vizDelayOn = true;
     var vizHist = [];
     var vizHistPool = [];
     function vizFrame(t) {
@@ -11058,15 +11049,6 @@ var PD = {
         vizHist.push(snap);
         while (vizHist.length > 2 && vizHist[0].ts < t - 700) vizHistPool.push(vizHist.shift());
         var pick = vizHist[vizHist.length - 1];
-        if (vizDelayOn) {
-          pick = vizHist[0];
-          for (var hi = vizHist.length - 1; hi >= 0; hi--) {
-            if (vizHist[hi].ts <= t - VIZ_DELAY_MS) {
-              pick = vizHist[hi];
-              break;
-            }
-          }
-        }
         dispFreq = pick.freq;
         dispLevel = pick.level;
         dispBass = pick.bass;
@@ -11232,11 +11214,6 @@ var PD = {
         playerMenuEl.hidden = false;
         __tunnel.setAttr(playerMenuBtnEl, "aria-expanded", "true");
       } else closePlayerMenu();
-    });
-    $("vizDelayToggle").addEventListener("click", function () {
-      vizDelayOn = !vizDelayOn;
-      this.classList.toggle("on", vizDelayOn);
-      __tunnel.setAttr(this, "aria-checked", vizDelayOn ? "true" : "false");
     });
     $("playerMenuDeploy").addEventListener("click", function () {
       closePlayerMenu();
