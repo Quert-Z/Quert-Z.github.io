@@ -3815,6 +3815,7 @@ ${v}`;
       setTimeout(sweepAll, 0);
       setTimeout(sweepAll, 50);
       setTimeout(sweepAll, 250);
+      if (!location.href.startsWith("blob:null/")) setTimeout(rewriteAuthoredHtml, 0);
     }
     function rewriteAuthoredHtml() {
       const SELECTORS = "[data-hatch-src], [data-hatch-href], [data-hatch-srcset]";
