@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-30",
+  "as_of": "2026-09-30",
   "notes": {
     "source": "Trailing-twelve-month (TTM) quarterly series computed from SEC EDGAR companyfacts (discrete quarterly values; Q4 = FY annual minus Q1-Q3). MA and V series computed the same way Nov 5, 2026 from companyfacts. ASML is in EUR (IFRS filer, carried forward whole).",
     "units": "rev_m / fcf_m / ebita_m are USD millions (EUR millions for ASML); eps is USD per share (EUR for ASML).",
