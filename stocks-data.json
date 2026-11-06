@@ -88,22 +88,8 @@
       "debt_equity": 63.9,
       "last_acc": "0001543151-26-000041",
       "market_cap_b": 140.51,
-      "core_pe": 21.1
-    },
-    {
-      "ticker": "SPGI",
-      "currency": "USD",
-      "price": 473.99,
-      "price_date": "2026-11-05",
-      "ttm_op_income": 7256000000,
-      "vintage": "2026-09-30",
-      "net_debt": 10565000000,
-      "shares_out": 294700000,
-      "rev_growth_yoy": 6.8,
-      "debt_equity": 66.3,
-      "last_acc": "0000064040-26-000058",
-      "market_cap_b": 139.68,
-      "core_pe": 20.7
+      "core_pe": 21.1,
+      "rev_growth_yoy": 10.0
     },
     {
       "ticker": "MA",
@@ -128,13 +114,15 @@
       "price_date": "2026-11-03",
       "currency": "USD",
       "market_cap_b": 601.72,
-      "core_pe": 39.1,
+      "core_pe": 34.8,
       "forward_pe": null,
       "avg_pe": null,
       "rev_growth_yoy": null,
       "debt_equity": null,
-      "ttm_op_income": 15220000000,
-      "vintage": "2026-09-30"
+      "ttm_op_income": 17098148000,
+      "vintage": "2026-09-30",
+      "ttm_op_income_eur": 15220000000,
+      "eur_usd_rate": 1.1234
     }
   ],
   "benchmark": {
