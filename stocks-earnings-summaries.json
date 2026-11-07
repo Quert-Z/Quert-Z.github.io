@@ -1,0 +1,78 @@
+{
+  "as_of": "2026-11-07",
+  "note": "Hand-written summaries of each tracked stock's most recent earnings report. Update a stock's entry when it reports a new quarter. The GitHub Action does not touch this file.",
+  "summaries": {
+    "META": {
+      "ticker": "META",
+      "company": "Meta",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-21",
+      "verdict": "beat",
+      "summary": "Meta's Q3 was a beat. Revenue $64.6B, up 26% year over year, vs about $63.3B expected. EPS was $3.83 on paper, but that's dragged down by a one-time $9.9B legal charge — without it, EPS was $7.40 vs about $6.85 expected. They guided Q4 revenue to $73–76B and raised their 2026 AI spending plan to $135–145B. The thing to watch is the AI spend — they're pouring money into infrastructure, and the stock will move on whether that turns into revenue."
+    },
+    "GOOG": {
+      "ticker": "GOOG",
+      "company": "Google",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-28",
+      "verdict": "mixed",
+      "summary": "Google's Q3 was mixed. Revenue $127.6B, up 25% year over year, vs about $127.9B expected — a slight miss. EPS was $2.12 vs about $3.00 expected, but that's distorted by an $8.7B loss on equity securities — without it, EPS was about $2.67. The bright spot was Cloud: $30.7B in revenue, up 103%, with a 36.2% operating margin. They raised 2026 capex guidance to $195–205B. The stock fell 12.6% the next day, its worst day ever, on the AI spending bill coming due."
+    },
+    "MSFT": {
+      "ticker": "MSFT",
+      "company": "Microsoft",
+      "quarter": "Q1 FY2027",
+      "reported": "2026-10-28",
+      "verdict": "beat",
+      "summary": "Microsoft's quarter was a beat. Revenue $92.3B, up 19% year over year, vs about $90.6B expected. Non-GAAP EPS was $4.89, up 18%, vs about $4.71 expected. Azure grew 48% to $33.2B. The new Agents and Infra segment did $76.8B, up 25%. The stock moved on Azure — 48% growth is the number that matters, and it's still accelerating."
+    },
+    "AMZN": {
+      "ticker": "AMZN",
+      "company": "Amazon",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-29",
+      "verdict": "mixed",
+      "summary": "Amazon's Q3 was mixed. Revenue $201.9B, up 12%, vs about $202.2B expected — basically in line. EPS was $1.89 vs about $1.96–2.01 expected, a miss, partly on Anthropic-related noise. But AWS was the story: $46.0B, up 39.3%, its fastest growth in about five years, and management guided AWS growth above 40% for 2027 and 2028. Operating income hit $28.1B, up 61%, a record 13.9% margin. Q4 guidance is $240–247B in sales. The stock moved on AWS — the acceleration is what matters."
+    },
+    "NFLX": {
+      "ticker": "NFLX",
+      "company": "Netflix",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-20",
+      "verdict": "in line",
+      "summary": "Netflix's Q3 was in line. Revenue $12.87B, up 11.8%, about as expected. EPS was $0.87 vs $0.82 expected. Operating margin was 34.6%. They guided Q4 revenue to $13.44B with a 26.0% margin and EPS of $0.67, and cut their 2026 ad revenue target to about $2.7B. The thing to watch is ads — the ad business is growing slower than hoped, and that's the main drag."
+    },
+    "UBER": {
+      "ticker": "UBER",
+      "company": "Uber",
+      "quarter": "Q3 2026",
+      "reported": "2026-11-04",
+      "verdict": "beat",
+      "summary": "Uber's Q3 was a beat. Revenue $14.8B, up 10%, vs about $14.7B expected. Adjusted EPS was $0.88, up 35%, vs about $0.86 expected. Gross bookings were $59.8B, up 20% — the fifth straight quarter of 20%+ growth. GAAP EPS was $0.25, distorted by a $476M investment loss. They guided Q4 bookings to $63.25–65.25B and adjusted EPS to $0.95–0.99. The stock moved on the bookings streak — five quarters in a row above 20% is the story."
+    },
+    "MA": {
+      "ticker": "MA",
+      "company": "Mastercard",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-29",
+      "verdict": "beat",
+      "summary": "Mastercard's Q3 was a beat. Revenue $9.81B, up 14%, vs about $9.63–9.66B expected. Adjusted EPS was $5.31, up 21%, vs about $5.14–5.17 expected. Cross-border volume grew 11%. They reaffirmed their low-teens outlook for the full year. The stock closed up 4.3% at $636.52, a new 52-week high. One caution: the new CFO said some Q3 revenue was pulled forward from Q4, so Q4 might be a touch softer."
+    },
+    "V": {
+      "ticker": "V",
+      "company": "Visa",
+      "quarter": "Q4 FY2026",
+      "reported": "2026-10-27",
+      "verdict": "beat",
+      "summary": "Visa's fiscal Q4 was a beat on both lines. Revenue $12.14B, up 13.2%, vs $12.08B expected. Adjusted EPS was $3.48, up 17%, vs $3.43 expected. Full-year 2026 revenue was $45.9B, up 15%. They raised the dividend 16% to $0.78 and have $24.4B of buyback left. The stock still fell over 1% after hours on the fiscal 2027 guidance — the guide, not the quarter, is what the market didn't like."
+    },
+    "ASML": {
+      "ticker": "ASML",
+      "company": "ASML",
+      "quarter": "Q3 2026",
+      "reported": "2026-10-14",
+      "verdict": "record",
+      "summary": "ASML's Q3 was a record. Net sales €11.66B, up 55% year over year, at the top of their €11.0–12.0B guidance range. Gross margin was 57.5%, above the 55–57% they guided. Net income was €4.96B, EPS €12.95 — but that includes about a €0.5B gain from their Mistral AI investment, so underlying profit was closer to €4.5B. They guided Q4 sales to €14.2–15.2B and raised full-year 2026 revenue guidance to €44–45B. The CEO said demand will exceed their planned supply in 2027 and 2028 — they literally can't build machines fast enough, and that's the story."
+    }
+  }
+}
