@@ -2830,9 +2830,7 @@ body.music-open #top,body.music-open > footer,body.music-open .bg-fx,body.music-
     #musicView .phone-tab:active svg{transform:scale(.88)}
     #musicView .cat-tab{transition:color .25s var(--mp-ease),border-color .35s var(--mp-ease)}
 
-    /* song rows + playlist rows */
-    #musicView .row{transition:background-color .22s var(--mp-ease),border-color .3s var(--mp-ease)}
-    #musicView .row-title,#musicView .row-num,#musicView .row-dur{transition:color .3s var(--mp-ease)}
+    /* song rows: no transition — hover/active must snap instantly */
     #musicView .pl-row{transition:border-color .3s var(--mp-ease),transform .35s var(--mp-ease)}
     @media (hover:hover){
       #musicView .pl-row:hover{transform:translateY(-2px)}
