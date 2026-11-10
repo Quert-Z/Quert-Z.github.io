@@ -54,6 +54,14 @@
   ],
   "filings": [
     {
+      "date": "2026-11-09",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000230/0000789019-26-000230-index.htm",
+      "accession": "0000789019-26-000230"
+    },
+    {
       "date": "2026-11-06",
       "ticker": "NFLX",
       "form": "4",
@@ -806,5 +814,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 94
+  "filings_count": 95
 }
