@@ -2,7 +2,7 @@
 """
 update-stocks-data.py
 Refreshes the website's embedded stock dashboard data. Designed to run in
-GitHub Actions on weekday afternoons (ET); also runnable locally.
+GitHub Actions on weekday evenings (ET); also runnable locally.
 
 Maintains four JSON files in the repo root:
   stocks-data.json        Valuation tab (prices, core P/E, forward P/E, rev growth)
@@ -11,7 +11,9 @@ Maintains four JSON files in the repo root:
   stocks-earnings.json    Earnings + Filings tab (next earnings dates, filings list)
 
 Pipeline per stock:
-  prices:      Stooq CSV -> Nasdaq quote API -> Yahoo quote API (first success wins)
+  prices:      Stooq CSV -> Nasdaq quote API -> Yahoo quote API (first success wins;
+               Stooq is accepted only when its date is current — a stale Stooq
+               falls through to Nasdaq/Yahoo instead of writing old closes back)
   core inputs: SEC EDGAR companyfacts (recomputed only when a new 10-Q/10-K/20-F
                appears in the submissions feed; otherwise carried forward)
   forward P/E: Yahoo quote API forwardPE (carried forward when unavailable)
@@ -55,6 +57,17 @@ EARN_PATH = os.path.join(BASE_DIR, "stocks-earnings.json")
 GRAPH_HISTORY_CAP = 1500   # ~6 years of daily closes; oldest dropped past this
 FILINGS_CAP = 400          # filings list cap (matches the dashboard tab)
 FILING_FORMS = ("8-K", "10-Q", "10-K", "4", "13D", "13G", "13D/A", "13G/A")
+
+# NYSE full-day holidays — the Stooq freshness check below must not treat a
+# holiday as "Stooq is stale": on a holiday Stooq legitimately still shows the
+# previous close, and falling through would stamp the holiday's date on it.
+# Refresh this list each January (2026-11-26 and 2026-12-25 are the remaining
+# 2026 closures; the 2027 dates are the standard NYSE calendar).
+NYSE_HOLIDAYS = {
+    "2026-11-26", "2026-12-25",
+    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31",
+    "2027-06-18", "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24",
+}
 # tickers whose fundamental quarter is maintained (fiscal calendar per ticker)
 FUND_FISCAL = {"GOOG": "dec", "META": "dec", "AMZN": "dec", "MSFT": "msft",
                "NFLX": "dec", "UBER": "dec", "MA": "dec", "V": "sep"}
@@ -148,11 +161,23 @@ def yahoo_results(symbols):
 
 
 def fetch_prices(tickers):
-    """Cascade: Stooq -> Nasdaq -> Yahoo. Returns {ticker: (price, date)}."""
+    """Cascade: Stooq -> Nasdaq -> Yahoo. Returns {ticker: (price, date)}.
+
+    Stooq rows carry their own date. If the newest Stooq date is older than
+    today — and today is not a NYSE holiday — Stooq has not published today's
+    closes yet, so fall through to Nasdaq/Yahoo instead of writing yesterday's
+    prices back (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
+    """
     try:
-        return fetch_prices_stooq(tickers)
+        stooq = fetch_prices_stooq(tickers)
     except Exception as e:
         log(f"prices: Stooq failed ({e}); trying Nasdaq")
+    else:
+        today = datetime.date.today().isoformat()
+        newest = max(d for _, d in stooq.values())
+        if newest >= today or today in NYSE_HOLIDAYS:
+            return stooq
+        log(f"prices: Stooq stale (newest {newest}, today {today}); trying Nasdaq")
     out = {}
     for t in tickers:
         try:
