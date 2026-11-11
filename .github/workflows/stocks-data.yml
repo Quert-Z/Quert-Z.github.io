@@ -2,13 +2,15 @@ name: Update stocks data
 
 # Refreshes the website's embedded dashboard data (stocks-data.json,
 # stocks-graph.json, stocks-fundamental.json, stocks-earnings.json) on
-# weekday afternoons after the US market close. Commits only when values change.
+# weekday evenings after the US market close. Commits only when values change.
 # Manual runs: Actions tab -> "Update stocks data" -> Run workflow.
 
 on:
   schedule:
-    # 22:05 UTC = 17:05 EST (18:05 EDT in summer), Mon-Fri
-    - cron: '5 22 * * 1-5'
+    # 00:05 UTC = 19:05 EST (20:05 EDT in summer), Tue-Sat UTC = Mon-Fri ET.
+    # Moved later from 22:05 UTC on Nov 11, 2026 so Stooq has published the
+    # day's closes before the run (Nov 10 run missed the close at 17:05 EST).
+    - cron: '5 0 * * 2-6'
   workflow_dispatch:
 
 permissions:
