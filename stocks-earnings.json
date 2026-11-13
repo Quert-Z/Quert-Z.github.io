@@ -54,6 +54,46 @@
   ],
   "filings": [
     {
+      "date": "2026-11-12",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326017401/0000950103-26-017401-index.htm",
+      "accession": "0000950103-26-017401"
+    },
+    {
+      "date": "2026-11-12",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326017398/0000950103-26-017398-index.htm",
+      "accession": "0000950103-26-017398"
+    },
+    {
+      "date": "2026-11-12",
+      "ticker": "META",
+      "form": "8-K",
+      "summary": "8-K \u2014 8-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526458525/0001193125-26-458525-index.htm",
+      "accession": "0001193125-26-458525"
+    },
+    {
+      "date": "2026-11-12",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000042/0001018724-26-000042-index.htm",
+      "accession": "0001018724-26-000042"
+    },
+    {
+      "date": "2026-11-12",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000234/0000789019-26-000234-index.htm",
+      "accession": "0000789019-26-000234"
+    },
+    {
       "date": "2026-11-10",
       "ticker": "MSFT",
       "form": "4",
@@ -830,5 +870,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 97
+  "filings_count": 102
 }
