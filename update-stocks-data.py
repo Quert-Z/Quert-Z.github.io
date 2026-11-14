@@ -11,9 +11,10 @@ Maintains four JSON files in the repo root:
   stocks-earnings.json    Earnings + Filings tab (next earnings dates, filings list)
 
 Pipeline per stock:
-  prices:      Stooq CSV -> Nasdaq quote API -> Yahoo quote API (first success wins;
-               Stooq is accepted only when its date is current — a stale Stooq
-               falls through to Nasdaq/Yahoo instead of writing old closes back)
+  prices:      Stooq CSV -> Nasdaq quote API -> Yahoo quote API, per ticker:
+               each ticker falls through to the next source on its own when a
+               source misses it or serves it stale, so one bad symbol can no
+               longer freeze while the rest update (V/ASML/SPY, Nov 5-13 2026)
   core inputs: SEC EDGAR companyfacts (recomputed only when a new 10-Q/10-K/20-F
                appears in the submissions feed; otherwise carried forward)
   forward P/E: Yahoo quote API forwardPE (carried forward when unavailable)
@@ -140,6 +141,21 @@ def fetch_price_nasdaq(ticker):
     return price, datetime.date.today().isoformat()
 
 
+def fetch_price_nasdaq_hist(ticker):
+    """Latest close + true trading date from Nasdaq's historical endpoint.
+    Fallback for SPY: the quote endpoint above rejects it under both
+    assetclass values, but the historical endpoint serves it with
+    assetclass=etf (verified 2026-11-14)."""
+    frm = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
+    url = (f"https://api.nasdaq.com/api/quote/{ticker}/historical"
+           f"?assetclass=etf&fromdate={frm}&limit=100")
+    d = http_get_json(url, timeout=20)
+    row = d["data"]["tradesTable"]["rows"][0]
+    price = float(row["close"].replace(",", "").replace("$", ""))
+    m, dd, y = row["date"].split("/")
+    return price, f"{y}-{m}-{dd}"
+
+
 _yahoo_opener = None
 
 
@@ -161,38 +177,68 @@ def yahoo_results(symbols):
 
 
 def fetch_prices(tickers):
-    """Cascade: Stooq -> Nasdaq -> Yahoo. Returns {ticker: (price, date)}.
+    """Per-ticker cascade: Stooq -> Nasdaq -> Yahoo. Returns {ticker: (price, date)}.
 
-    Stooq rows carry their own date. If the newest Stooq date is older than
-    today — and today is not a NYSE holiday — Stooq has not published today's
-    closes yet, so fall through to Nasdaq/Yahoo instead of writing yesterday's
-    prices back (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
+    Each ticker is filled independently: a ticker that a source misses — or
+    serves stale while the source's other rows are current — falls through to
+    the next source on its own. The old all-or-nothing hand-off froze V, ASML
+    and SPY at Nov 5, 2026 for 9 days: Stooq's combined response kept passing
+    the freshness check on the other tickers' rows while those three stopped
+    arriving, and the Nasdaq step returned its partial dict without ever
+    trying Yahoo for the missing ones. SPY's quote-API route is dead —
+    Nasdaq rejects it under both assetclass values — so it falls back to
+    Nasdaq's historical endpoint (assetclass=etf), then Yahoo. And V/ASML
+    were missing from the fetch list entirely (see main), so no source was
+    ever asked for them.
+
+    Stooq rows carry their own date and are accepted per ticker only at
+    Stooq's newest vintage, and only when that vintage is current: if the
+    newest Stooq date is older than today — and today is not a NYSE holiday —
+    Stooq has not published today's closes yet, so no Stooq row is used
+    (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
     """
+    today = datetime.date.today().isoformat()
+    out = {}
     try:
         stooq = fetch_prices_stooq(tickers)
-    except Exception as e:
-        log(f"prices: Stooq failed ({e}); trying Nasdaq")
-    else:
-        today = datetime.date.today().isoformat()
         newest = max(d for _, d in stooq.values())
         if newest >= today or today in NYSE_HOLIDAYS:
-            return stooq
-        log(f"prices: Stooq stale (newest {newest}, today {today}); trying Nasdaq")
-    out = {}
+            for t in tickers:
+                if t in stooq and stooq[t][1] == newest:
+                    out[t] = stooq[t]
+            log(f"prices: Stooq filled {sorted(out)} (vintage {newest})")
+        else:
+            log(f"prices: Stooq stale (newest {newest}, today {today})")
+    except Exception as e:
+        log(f"prices: Stooq failed ({e})")
     for t in tickers:
+        if t in out:
+            continue
         try:
             out[t] = fetch_price_nasdaq(t)
         except Exception as e:
+            # Nasdaq's quote endpoint rejects SPY under both assetclass
+            # values; its historical endpoint (assetclass=etf) serves it.
+            if t == BENCHMARK:
+                try:
+                    out[t] = fetch_price_nasdaq_hist(t)
+                    continue
+                except Exception:
+                    pass
             log(f"prices: Nasdaq failed for {t} ({e})")
-    if out:
-        return out
-    log("prices: Nasdaq failed; trying Yahoo")
-    res = yahoo_results(tickers)
-    for r in res:
-        t = r["symbol"].upper()
-        if "regularMarketPrice" in r:
-            out[t] = (float(r["regularMarketPrice"]),
-                      datetime.date.today().isoformat())
+    missing = [t for t in tickers if t not in out]
+    if missing:
+        try:
+            for r in yahoo_results(missing):
+                t = r["symbol"].upper()
+                if "regularMarketPrice" in r:
+                    out[t] = (float(r["regularMarketPrice"]),
+                              datetime.date.today().isoformat())
+        except Exception as e:
+            log(f"prices: Yahoo failed ({e})")
+    still = [t for t in tickers if t not in out]
+    if still:
+        log(f"prices: NO SOURCE for {still}; carried forward")
     if not out:
         raise RuntimeError("all price sources failed")
     return out
@@ -713,6 +759,7 @@ def update_graph(prev, prices):
         return prev
     for t, entry in prev["stocks"].items():
         if t not in prices:
+            log(f"graph {t}: no price this run; carried forward")
             continue
         price, pdate = prices[t]
         if not price or not pdate:
@@ -948,7 +995,11 @@ def main():
     prev_earn = load_prev(EARN_PATH)
     prev_by_ticker = {s["ticker"]: s for s in prev_data.get("stocks", [])}
 
-    tickers = [t for t, *_ in STOCKS] + [BENCHMARK]
+    # V and ASML have no Valuation row (V is fundamental-only, ASML is
+    # carried forward whole), but their graph series still need prices —
+    # leaving them out froze both charts after the last hand-append
+    # (Nov 5, 2026) while the other tickers kept updating.
+    tickers = [t for t, *_ in STOCKS] + ["V", "ASML", BENCHMARK]
     try:
         prices = fetch_prices(tickers)
     except Exception as e:
