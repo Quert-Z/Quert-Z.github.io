@@ -33,6 +33,6 @@ jobs:
         run: |
           git config user.name "stocks-bot"
           git config user.email "stocks-bot@users.noreply.github.com"
-          git add stocks-data.json stocks-graph.json stocks-fundamental.json stocks-earnings.json
+          git add stocks-data.json stocks-graph.json stocks-fundamental.json stocks-earnings.json stocks-sim10.json
           git diff --cached --quiet || git commit -m "Update stocks data (automated)"
           git push
