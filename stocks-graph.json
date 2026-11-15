@@ -3,10 +3,10 @@
   "notes": {
     "source": "Daily closes Nov 2023-Oct 30 2026 from the Nasdaq historical API (SPY from stockanalysis.com, which the Nasdaq API 400s for). Seeded from the dashboard's own Oct 30, 2026 snapshot; the GitHub Action appends each weekday's close and recomputes SMAs.",
     "qqq_forward_pe": {
-      "value": 21.6,
+      "value": 19.88,
       "source": "stockanalysis.com",
-      "as_of": "late October 2026",
-      "note": "Constant used by the chat's 'good buy' answers for comparison. Refresh manually when QQQ's forward P/E moves materially."
+      "as_of": "2026-11-15",
+      "note": "Constant used by the chat's 'good buy' answers for comparison. Refreshed by the updater each run."
     },
     "spy_close_note": "SPY Oct 30 close is $755.72 (stockanalysis.com). The SMA-cross cron's Nasdaq-quote source reported $755.69 the same day - a 3-cent source discrepancy, flagged Nov 5, 2026.",
     "asml_currency": "ASML prices are the US ADR (USD).",
@@ -3031,14 +3031,14 @@
         },
         {
           "d": "2026-11-14",
-          "c": 290.85
+          "c": 292.52
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 290.85,
-        "sma50": 330.46,
-        "sma200": 337.69,
+        "close": 292.52,
+        "sma50": 330.49,
+        "sma200": 337.7,
         "signal": "BUY"
       }
     },
@@ -6060,14 +6060,14 @@
         },
         {
           "d": "2026-11-14",
-          "c": 637.15
+          "c": 641.69
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 637.15,
-        "sma50": 675.94,
-        "sma200": 632.2,
+        "close": 641.69,
+        "sma50": 676.03,
+        "sma200": 632.22,
         "signal": "HOLD"
       }
     },
@@ -9089,14 +9089,14 @@
         },
         {
           "d": "2026-11-14",
-          "c": 264.34
+          "c": 266.66
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 264.34,
-        "sma50": 254.75,
-        "sma200": 244.14,
+        "close": 266.66,
+        "sma50": 254.79,
+        "sma200": 244.15,
         "signal": "HOLD"
       }
     },
@@ -12118,14 +12118,14 @@
         },
         {
           "d": "2026-11-14",
-          "c": 521.98
+          "c": 523.88
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 521.98,
-        "sma50": 516.78,
-        "sma200": 439.88,
+        "close": 523.88,
+        "sma50": 516.82,
+        "sma200": 439.89,
         "signal": "HOLD"
       }
     },
@@ -15147,14 +15147,14 @@
         },
         {
           "d": "2026-11-14",
-          "c": 61.95
+          "c": 62.15
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 61.95,
+        "close": 62.15,
         "sma50": 70.97,
-        "sma200": 81.02,
+        "sma200": 81.03,
         "signal": "BUY"
       }
     },
@@ -18176,13 +18176,13 @@
         },
         {
           "d": "2026-11-14",
-          "c": 660.88
+          "c": 661.19
         }
       ],
       "latest": {
         "date": "2026-11-14",
-        "close": 660.88,
-        "sma50": 592.96,
+        "close": 661.19,
+        "sma50": 592.97,
         "sma200": 538.77,
         "signal": "HOLD"
       }

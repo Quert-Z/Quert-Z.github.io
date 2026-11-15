@@ -4,7 +4,7 @@
     {
       "ticker": "GOOG",
       "currency": "USD",
-      "price": 290.85,
+      "price": 292.52,
       "price_date": "2026-11-13",
       "ttm_op_income": 156976000000,
       "vintage": "2026-09-30",
@@ -12,14 +12,16 @@
       "shares_out": 12169000000,
       "debt_equity": 18.6,
       "last_acc": "0001652044-26-000084",
-      "market_cap_b": 3539.35,
-      "core_pe": 21.7,
-      "rev_growth_yoy": 24.7
+      "market_cap_b": 3559.68,
+      "core_pe": 21.8,
+      "rev_growth_yoy": 24.7,
+      "forward_pe": 20.88,
+      "avg_pe": 21.3
     },
     {
       "ticker": "META",
       "currency": "USD",
-      "price": 637.15,
+      "price": 641.69,
       "price_date": "2026-11-13",
       "ttm_op_income": 79380000000,
       "vintage": "2026-09-30",
@@ -28,13 +30,15 @@
       "rev_growth_yoy": 26.1,
       "debt_equity": 30.7,
       "last_acc": "0001628280-26-066773",
-      "market_cap_b": 1620.27,
-      "core_pe": 20.4
+      "market_cap_b": 1631.82,
+      "core_pe": 20.6,
+      "forward_pe": 19.48,
+      "avg_pe": 20.0
     },
     {
       "ticker": "AMZN",
       "currency": "USD",
-      "price": 264.34,
+      "price": 266.66,
       "price_date": "2026-11-13",
       "ttm_op_income": 104366000000,
       "vintage": "2026-09-30",
@@ -43,13 +47,15 @@
       "rev_growth_yoy": 12.1,
       "debt_equity": 29.3,
       "last_acc": "0001018724-26-000040",
-      "market_cap_b": 2846.94,
-      "core_pe": 27.9
+      "market_cap_b": 2871.93,
+      "core_pe": 28.1,
+      "forward_pe": 26.97,
+      "avg_pe": 27.5
     },
     {
       "ticker": "MSFT",
       "currency": "USD",
-      "price": 521.98,
+      "price": 523.88,
       "price_date": "2026-11-13",
       "ttm_op_income": 163191000000,
       "vintage": "2026-09-30",
@@ -58,13 +64,15 @@
       "rev_growth_yoy": 18.8,
       "debt_equity": 7.5,
       "last_acc": "0001193125-26-436133",
-      "market_cap_b": 3876.22,
-      "core_pe": 23.6
+      "market_cap_b": 3890.33,
+      "core_pe": 23.7,
+      "forward_pe": 25.24,
+      "avg_pe": 24.5
     },
     {
       "ticker": "NFLX",
       "currency": "USD",
-      "price": 61.95,
+      "price": 62.15,
       "price_date": "2026-11-13",
       "ttm_op_income": 15564870000,
       "vintage": "2026-09-30",
@@ -73,13 +81,15 @@
       "rev_growth_yoy": 11.8,
       "debt_equity": 51.7,
       "last_acc": "0001065280-26-000291",
-      "market_cap_b": 259.07,
-      "core_pe": 17.1
+      "market_cap_b": 259.9,
+      "core_pe": 17.1,
+      "forward_pe": 17.31,
+      "avg_pe": 17.2
     },
     {
       "ticker": "MA",
       "currency": "USD",
-      "price": 660.88,
+      "price": 661.19,
       "price_date": "2026-11-13",
       "ttm_op_income": 21266000000,
       "vintage": "2026-09-30",
@@ -87,11 +97,11 @@
       "shares_out": 883000000,
       "debt_equity": 354.5,
       "last_acc": "0001141391-26-000124",
-      "market_cap_b": 583.56,
+      "market_cap_b": 583.83,
       "core_pe": 28.1,
       "rev_growth_yoy": 14.0,
-      "forward_pe": 28.61,
-      "avg_pe": 28.4
+      "forward_pe": 29.74,
+      "avg_pe": 28.9
     },
     {
       "ticker": "ISRG",
@@ -105,7 +115,9 @@
       "rev_growth_yoy": 21.7,
       "last_acc": "0001035267-26-000071",
       "market_cap_b": 156.41,
-      "core_pe": 46.4
+      "core_pe": 46.4,
+      "forward_pe": 36.76,
+      "avg_pe": 41.6
     },
     {
       "ticker": "SPGI",
@@ -120,7 +132,9 @@
       "debt_equity": 66.3,
       "last_acc": "0000064040-26-000058",
       "market_cap_b": 139.57,
-      "core_pe": 19.9
+      "core_pe": 19.9,
+      "forward_pe": 24.4,
+      "avg_pe": 22.1
     },
     {
       "ticker": "ASML",
@@ -129,9 +143,9 @@
       "currency": "USD",
       "market_cap_b": 577.05,
       "core_pe": 33.4,
-      "forward_pe": null,
-      "avg_pe": null,
-      "rev_growth_yoy": null,
+      "forward_pe": 23.44,
+      "avg_pe": 28.4,
+      "rev_growth_yoy": 22.5,
       "debt_equity": null,
       "ttm_op_income": 17098148000,
       "vintage": "2026-09-30",

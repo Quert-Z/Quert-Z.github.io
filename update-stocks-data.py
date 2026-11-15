@@ -11,18 +11,32 @@ Maintains four JSON files in the repo root:
   stocks-earnings.json    Earnings + Filings tab (next earnings dates, filings list)
 
 Pipeline per stock:
-  prices:      Stooq CSV -> Nasdaq quote API -> Yahoo quote API, per ticker:
-               each ticker falls through to the next source on its own when a
-               source misses it or serves it stale, so one bad symbol can no
-               longer freeze while the rest update (V/ASML/SPY, Nov 5-13 2026)
+  prices:      Nasdaq historical -> Nasdaq quote API -> Yahoo quote API ->
+               Stooq CSV, per ticker: each ticker falls through to the next
+               source on its own when a source misses it or serves it stale,
+               so one bad symbol can no longer freeze while the rest update
+               (V/ASML/SPY, Nov 5-13 2026). Nasdaq historical leads because it
+               returns the official close with its true trading date; Stooq's
+               snapshot closes were found on 2026-11-15 to differ from the
+               official closes by up to ~0.9% (META/AMZN/GOOG/MSFT/NFLX/MA)
+               while agreeing on ASML/ISRG/SPGI/SPY, so Stooq is last resort.
   core inputs: SEC EDGAR companyfacts (recomputed only when a new 10-Q/10-K/20-F
                appears in the submissions feed; otherwise carried forward)
-  forward P/E: Yahoo quote API forwardPE (carried forward when unavailable)
+  forward P/E: stockanalysis.com statistics page (same basis as the private
+               dashboard), falling back to Yahoo quote API forwardPE, then
+               carried forward. The QQQ forward P/E in the graph notes is
+               refreshed the same way each run. ASML's row is still carried
+               forward whole for its EUR core P/E inputs, but its forward P/E,
+               average P/E and revenue growth (TTM, from the Fundamental
+               series) are refreshed each run.
   rev growth:  discrete quarterly revenue Y/Y from companyfacts (carried forward)
   debt/equity: companyfacts balance sheet (carried forward)
   graph:       each weekday's close is appended to the daily history; SMAs and the
                signal are recomputed (BUY when close < 200-day SMA; HOLD when
-               close > 50-day SMA, otherwise HOLD; SPY: BUY when close < 50-day SMA)
+               close > 50-day SMA, otherwise HOLD; SPY: BUY when close < 50-day SMA).
+               A close reported for the SAME date as the last history point
+               replaces it and recomputes, so a better source self-heals the
+               series (the 2026-11-15 Stooq-basis closes were corrected this way)
   fundamental: a new quarter is appended only when EDGAR submissions shows a new
                10-Q/10-K/20-F for that ticker (same trigger as core P/E); TTM values
                are computed from companyfacts discrete quarterly values
@@ -140,14 +154,13 @@ def fetch_price_nasdaq(ticker):
     return price, datetime.date.today().isoformat()
 
 
-def fetch_price_nasdaq_hist(ticker):
+def fetch_price_nasdaq_hist(ticker, assetclass="stocks"):
     """Latest close + true trading date from Nasdaq's historical endpoint.
-    Fallback for SPY: the quote endpoint above rejects it under both
-    assetclass values, but the historical endpoint serves it with
-    assetclass=etf (verified 2026-11-14)."""
+    SPY is served only with assetclass=etf (the quote endpoint rejects it
+    under both assetclass values; verified 2026-11-14)."""
     frm = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
     url = (f"https://api.nasdaq.com/api/quote/{ticker}/historical"
-           f"?assetclass=etf&fromdate={frm}&limit=100")
+           f"?assetclass={assetclass}&fromdate={frm}&limit=100")
     d = http_get_json(url, timeout=20)
     row = d["data"]["tradesTable"]["rows"][0]
     price = float(row["close"].replace(",", "").replace("$", ""))
@@ -176,71 +189,133 @@ def yahoo_results(symbols):
 
 
 def fetch_prices(tickers):
-    """Per-ticker cascade: Stooq -> Nasdaq -> Yahoo. Returns {ticker: (price, date)}.
+    """Per-ticker cascade: Nasdaq historical -> Nasdaq quote -> Yahoo ->
+    Stooq. Returns {ticker: (price, date)}.
 
     Each ticker is filled independently: a ticker that a source misses — or
-    serves stale while the source's other rows are current — falls through to
-    the next source on its own. The old all-or-nothing hand-off froze V, ASML
-    and SPY at Nov 5, 2026 for 9 days: Stooq's combined response kept passing
-    the freshness check on the other tickers' rows while those three stopped
-    arriving, and the Nasdaq step returned its partial dict without ever
-    trying Yahoo for the missing ones. SPY's quote-API route is dead —
-    Nasdaq rejects it under both assetclass values — so it falls back to
-    Nasdaq's historical endpoint (assetclass=etf), then Yahoo. And V/ASML
-    were missing from the fetch list entirely (see main), so no source was
-    ever asked for them.
+    serves stale — falls through to the next source on its own. The old
+    all-or-nothing hand-off froze V, ASML and SPY at Nov 5, 2026 for 9 days.
 
-    Stooq rows carry their own date and are accepted per ticker only at
-    Stooq's newest vintage, and only when that vintage is current: if the
-    newest Stooq date is older than today — and today is not a NYSE holiday —
-    Stooq has not published today's closes yet, so no Stooq row is used
-    (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
+    Nasdaq historical leads: it returns the official close with its true
+    trading date. On a trading day, a historical row dated before today
+    means the EOD feed is still lagging (seen at 16:05 ET), so the row is
+    held as a fallback while the quote API is tried — its lastSalePrice is
+    the official close once the session has ended, and this job only runs
+    after the close. SPY skips the quote step (Nasdaq rejects it under both
+    assetclass values) and uses assetclass=etf on the historical endpoint.
+
+    Stooq is the last resort, with its vintage guard kept: rows are accepted
+    per ticker only at Stooq's newest vintage, and only when that vintage is
+    current (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
     """
-    today = datetime.date.today().isoformat()
+    today = datetime.date.today()
+    today_s = today.isoformat()
+    trading_today = today.weekday() < 5 and today_s not in NYSE_HOLIDAYS
     out = {}
-    try:
-        stooq = fetch_prices_stooq(tickers)
-        newest = max(d for _, d in stooq.values())
-        if newest >= today or today in NYSE_HOLIDAYS:
-            for t in tickers:
-                if t in stooq and stooq[t][1] == newest:
-                    out[t] = stooq[t]
-            log(f"prices: Stooq filled {sorted(out)} (vintage {newest})")
-        else:
-            log(f"prices: Stooq stale (newest {newest}, today {today})")
-    except Exception as e:
-        log(f"prices: Stooq failed ({e})")
+    stale_hist = {}
     for t in tickers:
-        if t in out:
+        ac = "etf" if t == BENCHMARK else "stocks"
+        try:
+            price, pdate = fetch_price_nasdaq_hist(t, ac)
+            if trading_today and pdate < today_s:
+                stale_hist[t] = (price, pdate)
+                log(f"prices: Nasdaq hist for {t} still at {pdate}; trying fresher sources")
+                continue
+            out[t] = (price, pdate)
+        except Exception as e:
+            log(f"prices: Nasdaq hist failed for {t} ({e})")
+    for t in tickers:
+        if t in out or t == BENCHMARK:
             continue
         try:
             out[t] = fetch_price_nasdaq(t)
+            stale_hist.pop(t, None)
         except Exception as e:
-            # Nasdaq's quote endpoint rejects SPY under both assetclass
-            # values; its historical endpoint (assetclass=etf) serves it.
-            if t == BENCHMARK:
-                try:
-                    out[t] = fetch_price_nasdaq_hist(t)
-                    continue
-                except Exception:
-                    pass
-            log(f"prices: Nasdaq failed for {t} ({e})")
+            log(f"prices: Nasdaq quote failed for {t} ({e})")
     missing = [t for t in tickers if t not in out]
     if missing:
         try:
             for r in yahoo_results(missing):
                 t = r["symbol"].upper()
                 if "regularMarketPrice" in r:
-                    out[t] = (float(r["regularMarketPrice"]),
-                              datetime.date.today().isoformat())
+                    out[t] = (float(r["regularMarketPrice"]), today_s)
+                    stale_hist.pop(t, None)
         except Exception as e:
             log(f"prices: Yahoo failed ({e})")
+    for t, v in stale_hist.items():
+        if t not in out:
+            out[t] = v
+            log(f"prices: {t} fell back to Nasdaq hist {v[1]} close {v[0]}")
+    still = [t for t in tickers if t not in out]
+    if still:
+        try:
+            stooq = fetch_prices_stooq(still)
+            newest = max(d for _, d in stooq.values())
+            if newest >= today_s or today_s in NYSE_HOLIDAYS:
+                for t in still:
+                    if t in stooq and stooq[t][1] == newest:
+                        out[t] = stooq[t]
+                log(f"prices: Stooq filled {[t for t in still if t in out]} (vintage {newest})")
+            else:
+                log(f"prices: Stooq stale (newest {newest}, today {today_s})")
+        except Exception as e:
+            log(f"prices: Stooq failed ({e})")
     still = [t for t in tickers if t not in out]
     if still:
         log(f"prices: NO SOURCE for {still}; carried forward")
     if not out:
         raise RuntimeError("all price sources failed")
     return out
+
+
+# ---------------------------------------------------------- forward P/E ---
+
+SA_UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/120.0 Safari/537.36",
+         "Accept": "text/html"}
+_sa_fpe_cache = {}
+
+
+def _sa_fetch(url):
+    req = urllib.request.Request(url, headers=SA_UA)
+    with urllib.request.urlopen(req, timeout=25) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def sa_forward_pe(ticker):
+    """Forward P/E from stockanalysis.com's statistics page, which embeds
+    the value as id:"peForward",title:"Forward PE",value:"19.48". This is
+    the same source the private dashboard is audited against. None on any
+    failure (the caller falls back to Yahoo, then carries forward)."""
+    if ticker in _sa_fpe_cache:
+        return _sa_fpe_cache[ticker]
+    val = None
+    try:
+        html = _sa_fetch(f"https://stockanalysis.com/stocks/{ticker.lower()}/statistics/")
+        m = re.search(r'id:"peForward",title:"Forward PE",value:"([0-9.]+)"', html)
+        if m:
+            val = float(m.group(1))
+        else:
+            log(f"fwd P/E: stockanalysis pattern not found for {ticker}")
+    except Exception as e:
+        log(f"fwd P/E: stockanalysis failed for {ticker} ({e})")
+    _sa_fpe_cache[ticker] = val
+    return val
+
+
+def sa_qqq_forward_pe():
+    """QQQ forward P/E from stockanalysis.com's ETF page (embedded value
+    when present, else the stats-table cell). None on failure."""
+    try:
+        html = _sa_fetch("https://stockanalysis.com/etf/qqq/")
+        m = re.search(r'id:"peForward",title:"Forward PE",value:"([0-9.]+)"', html) or \
+            re.search(r'Forward PE</td>\s*<td[^>]*>([0-9.]+)', html)
+        if m:
+            return float(m.group(1))
+    except Exception as e:
+        log(f"QQQ fwd P/E: stockanalysis failed ({e})")
+    return None
 
 
 # ---------------------------------------------------------------- EDGAR ---
@@ -736,18 +811,24 @@ def update_graph(prev, prices):
         if not price or not pdate:
             continue
         hist = entry.get("history", [])
-        if hist and pdate <= hist[-1]["d"]:
+        if hist and pdate < hist[-1]["d"]:
             continue
-        hist.append({"d": pdate, "c": round(float(price), 2)})
-        if len(hist) > GRAPH_HISTORY_CAP:
-            hist = hist[-GRAPH_HISTORY_CAP:]
+        if hist and pdate == hist[-1]["d"]:
+            if round(float(price), 2) == hist[-1]["c"]:
+                continue
+            hist[-1] = {"d": pdate, "c": round(float(price), 2)}
+            log(f"graph {t}: corrected {pdate} close to {price}")
+        else:
+            hist.append({"d": pdate, "c": round(float(price), 2)})
+            if len(hist) > GRAPH_HISTORY_CAP:
+                hist = hist[-GRAPH_HISTORY_CAP:]
+            log(f"graph {t}: appended {pdate} close {price}")
         entry["history"] = hist
         closes = [h["c"] for h in hist]
         s50, s200 = sma(closes, 50), sma(closes, 200)
         entry["latest"] = {"date": pdate, "close": round(float(price), 2),
                            "sma50": s50, "sma200": s200,
                            "signal": graph_signal(price, s50, s200, spy=(t == "SPY"))}
-        log(f"graph {t}: appended {pdate} close {price}")
     dates = [s["latest"]["date"] for s in prev["stocks"].values() if s.get("latest")]
     if dates:
         prev["as_of"] = max(dates)
@@ -930,12 +1011,14 @@ def refresh_stock(ticker, cik, currency, st_inv_tag, fiscal, prev, prices, yahoo
         except Exception as e:
             log(f"{ticker}: EDGAR recompute failed ({e}); carrying forward")
 
-    try:
-        fpe = yahoo.get(ticker, {}).get("forwardPE")
-        if fpe:
-            out["forward_pe"] = round(float(fpe), 2)
-    except Exception:
-        pass
+    fpe = sa_forward_pe(ticker)
+    if not fpe:
+        try:
+            fpe = yahoo.get(ticker, {}).get("forwardPE")
+        except Exception:
+            fpe = None
+    if fpe:
+        out["forward_pe"] = round(float(fpe), 2)
 
     try:
         if out.get("price") and out.get("shares_out") and out.get("ttm_op_income"):
@@ -981,7 +1064,7 @@ def main():
 
     yahoo = {}
     try:
-        for r in yahoo_results(tickers):
+        for r in yahoo_results(tickers + ["QQQ"]):
             yahoo[r["symbol"].upper()] = r
     except Exception as e:
         log(f"Yahoo failed ({e}); forward P/E carried forward")
@@ -1001,12 +1084,24 @@ def main():
                 stocks.append(prev_by_ticker[ticker])
         time.sleep(1)  # be polite to EDGAR
 
-    # ASML carried forward whole (IFRS filer; annual 20-F)
+    # ASML carried forward whole (IFRS filer; annual 20-F) — its EUR core
+    # P/E inputs stay hand-built, but forward P/E / average P/E and revenue
+    # growth are refreshed so the row never freezes at a baked snapshot.
     if "ASML" in prev_by_ticker:
         row = dict(prev_by_ticker["ASML"])
         row["ticker"] = "ASML"
+        fpe = sa_forward_pe("ASML")
+        if not fpe:
+            fpe = yahoo.get("ASML", {}).get("forwardPE")
+        if fpe:
+            row["forward_pe"] = round(float(fpe), 2)
+            if row.get("core_pe"):
+                row["avg_pe"] = round((row["core_pe"] + row["forward_pe"]) / 2, 1)
+        pts = ((prev_fund.get("stocks") or {}).get("ASML") or {}).get("points") or []
+        if len(pts) >= 5 and pts[-1].get("rev_m") and pts[-5].get("rev_m"):
+            row["rev_growth_yoy"] = round((pts[-1]["rev_m"] / pts[-5]["rev_m"] - 1) * 100, 1)
         stocks.append(row)
-        log("ASML: carried forward (IFRS filer)")
+        log("ASML: carried forward (IFRS filer); forward P/E + rev growth refreshed")
     else:
         log("ASML: no previous data; omitted")
 
@@ -1031,6 +1126,15 @@ def main():
     # --- Graph Analysis: append today's closes, recompute SMAs/signals
     if prev_graph:
         update_graph(prev_graph, prices)
+        qqq_fpe = sa_qqq_forward_pe()
+        if not qqq_fpe:
+            qqq_fpe = yahoo.get("QQQ", {}).get("forwardPE")
+        if qqq_fpe:
+            note = prev_graph.setdefault("notes", {}).setdefault("qqq_forward_pe", {})
+            note.update({"value": round(float(qqq_fpe), 2),
+                         "source": "stockanalysis.com",
+                         "as_of": datetime.date.today().isoformat()})
+            log(f"graph: QQQ forward P/E note set to {qqq_fpe}")
         json.dump(prev_graph, open(GRAPH_PATH, "w"), indent=2)
         log(f"wrote {GRAPH_PATH} as_of={prev_graph.get('as_of')}")
     else:
