@@ -28,15 +28,14 @@ Pipeline per stock:
                are computed from companyfacts discrete quarterly values
                (Q4 = FY annual minus Q1-Q3; MSFT fiscal Jun 30 YE, V fiscal Sep 30 YE)
   earnings:    filings are appended from EDGAR submissions for the 6 covered stocks
-               (GOOG, META, AMZN, MSFT, NFLX, UBER); MA/V/ASML filings are
+               (GOOG, META, AMZN, MSFT, NFLX); MA/ASML/ISRG/SPGI filings are
                never added. Earnings dates are carried forward and only replaced by
                a confirmed future date from Yahoo calendarEvents - never invented.
 
 The JSONs from the previous run are read first; any field that cannot be freshly
 verified keeps its previous value. The script never writes a null over a good
 value and never crashes on a single stock's failure. ASML is carried forward
-whole (IFRS filer; annual 20-F). V has no Valuation row, so its fundamental
-quarter is refreshed by a dedicated lightweight path (refresh_fundamental_only).
+whole (IFRS filer; annual 20-F).
 """
 
 import json
@@ -71,11 +70,10 @@ NYSE_HOLIDAYS = {
 }
 # tickers whose fundamental quarter is maintained (fiscal calendar per ticker)
 FUND_FISCAL = {"GOOG": "dec", "META": "dec", "AMZN": "dec", "MSFT": "msft",
-               "NFLX": "dec", "UBER": "dec", "MA": "dec", "V": "sep"}
-# filings coverage (the 6 EDGAR stocks) and the one fundamental-only ticker
+               "NFLX": "dec", "MA": "dec", "ISRG": "dec", "SPGI": "dec"}
+# filings coverage (the 5 EDGAR stocks whose filings feed the Earnings tab)
 EARNING_CIK = {"GOOG": "1652044", "META": "1326801", "AMZN": "1018724",
-               "MSFT": "789019", "NFLX": "1065280", "UBER": "1543151"}
-V_CIK = "1403161"  # Visa Inc. (corrected Nov 5, 2026; 0001404655 is HubSpot)
+               "MSFT": "789019", "NFLX": "1065280"}
 
 # ticker, cik (unpadded), currency, short-term-investments tag, fiscal calendar
 STOCKS = [
@@ -84,8 +82,9 @@ STOCKS = [
     ("AMZN", "1018724", "USD", "MarketableSecuritiesCurrent", "dec"),
     ("MSFT", "789019",  "USD", "ShortTermInvestments",        "msft"),
     ("NFLX", "1065280", "USD", None,                          "dec"),
-    ("UBER", "1543151", "USD", None,                          "dec"),
     ("MA",   "1141391", "USD", None,                          "dec"),
+    ("ISRG", "1035267", "USD", "MarketableSecuritiesCurrent", "dec"),
+    ("SPGI", "64040",   "USD", None,                          "dec"),
 ]
 BENCHMARK = "SPY"
 
@@ -629,34 +628,6 @@ def fund_cagrs(points):
     return out
 
 
-def refresh_fundamental_only(ticker, cik, fiscal, prev_fund):
-    """For tickers with no Valuation row (V): fetch submissions; if the newest
-    10-Q/10-K is a quarter the fundamental file does not have yet, fetch facts
-    and compute the point. Returns a point dict or None."""
-    try:
-        sub = edgar_submissions(cik)
-        latest = latest_10qk(sub)
-    except Exception as e:
-        log(f"{ticker}: submissions fetch failed ({e}); carrying forward")
-        return None
-    if not latest:
-        return None
-    rdate, form, acc = latest
-    label = quarter_label(rdate)
-    pts = prev_fund.get("stocks", {}).get(ticker, {}).get("points", [])
-    if pts and pts[-1]["q"] == label:
-        return None
-    try:
-        facts = edgar_facts(cik)
-        pt = compute_quarter_point(facts, rdate, fiscal, ticker)
-        if pt:
-            log(f"{ticker}: new quarter {label} from {form} {rdate}")
-        return pt
-    except Exception as e:
-        log(f"{ticker}: quarter point failed ({e})")
-        return None
-
-
 def latest_bs(units):
     cands = [e for e in units if e.get("form") in ("10-Q", "10-K", "20-F")]
     if not cands:
@@ -995,11 +966,11 @@ def main():
     prev_earn = load_prev(EARN_PATH)
     prev_by_ticker = {s["ticker"]: s for s in prev_data.get("stocks", [])}
 
-    # V and ASML have no Valuation row (V is fundamental-only, ASML is
-    # carried forward whole), but their graph series still need prices —
-    # leaving them out froze both charts after the last hand-append
-    # (Nov 5, 2026) while the other tickers kept updating.
-    tickers = [t for t, *_ in STOCKS] + ["V", "ASML", BENCHMARK]
+    # ASML has no Valuation row (carried forward whole), but its graph
+    # series still needs prices - leaving it out froze its chart after
+    # the last hand-append (Nov 5, 2026) while the other tickers kept
+    # updating.
+    tickers = [t for t, *_ in STOCKS] + ["ASML", BENCHMARK]
     try:
         prices = fetch_prices(tickers)
     except Exception as e:
@@ -1038,12 +1009,6 @@ def main():
         log("ASML: carried forward (IFRS filer)")
     else:
         log("ASML: no previous data; omitted")
-
-    # V has no Valuation row; refresh its fundamental quarter directly.
-    if prev_fund:
-        vpt = refresh_fundamental_only("V", V_CIK, "sep", prev_fund)
-        if vpt:
-            new_points["V"] = vpt
 
     spy_price, spy_date = prices.get(BENCHMARK, (None, None))
     dates = [s.get("price_date", "") for s in stocks if s.get("price_date")]

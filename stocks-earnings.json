@@ -32,24 +32,24 @@
       "status": "estimated"
     },
     {
-      "ticker": "UBER",
-      "date": "2027-02-03",
-      "status": "estimated"
-    },
-    {
       "ticker": "MA",
       "date": "2027-01-27",
-      "status": "estimated"
-    },
-    {
-      "ticker": "V",
-      "date": "2027-01-28",
       "status": "estimated"
     },
     {
       "ticker": "ASML",
       "date": "2027-01-27",
       "status": "scheduled"
+    },
+    {
+      "ticker": "ISRG",
+      "date": "2027-01-21",
+      "status": "estimated"
+    },
+    {
+      "ticker": "SPGI",
+      "date": "2027-02-10",
+      "status": "estimated"
     }
   ],
   "filings": [
@@ -244,14 +244,6 @@
       "summary": "Director Mathias Dopfner granted 1,002 non-qualified stock options @ $62.34 on 2026-11-02 (code A; not significant)",
       "url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000306/0001065280-26-000306-index.htm",
       "accession": "0001065280-26-000306"
-    },
-    {
-      "date": "2026-11-04",
-      "ticker": "UBER",
-      "form": "8-K",
-      "summary": "Q3 2026 earnings 8-K (items 2.02, 5.02, 9.01): revenue $14.8B (+10% y/y) vs ~$14.67B consensus; non-GAAP EPS $0.88 (+35%) vs ~$0.86 consensus; gross bookings $59.8B (+20% constant-currency); Q4 guide bookings $63.25-65.25B, non-GAAP EPS $0.95-0.99. Jill Hazelbaker (President & Chief Corporate Affairs Officer) steps down Nov 30.",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000039/0001543151-26-000039-index.htm",
-      "accession": "0001543151-26-000039"
     },
     {
       "date": "2026-11-04",
@@ -463,54 +455,6 @@
     },
     {
       "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "Krishnamurthy Balaji (A) (Chief Financial Officer) exercised options for 1,158 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000211186726000014/0002111867-26-000014-index.htm",
-      "accession": "0002111867-26-000014"
-    },
-    {
-      "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "Macdonald Andrew (See Remarks) exercised options for 4,042 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000207176126000013/0002071761-26-000013-index.htm",
-      "accession": "0002071761-26-000013"
-    },
-    {
-      "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "West Tony (See Remarks) exercised options for 2,910 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000162620126000023/0001626201-26-000023-index.htm",
-      "accession": "0001626201-26-000023"
-    },
-    {
-      "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "Hazelbaker Jill (See Remarks) exercised options for 2,546 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000177529726000014/0001775297-26-000014-index.htm",
-      "accession": "0001775297-26-000014"
-    },
-    {
-      "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "Ceremony Glen (See Remarks) exercised options for 1,516 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000152532126000011/0001525321-26-000011-index.htm",
-      "accession": "0001525321-26-000011"
-    },
-    {
-      "date": "2026-10-21",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "THAIN JOHN A exercised options for 350 shares",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000109035526000009/0001090355-26-000009-index.htm",
-      "accession": "0001090355-26-000009"
-    },
-    {
-      "date": "2026-10-21",
       "ticker": "NFLX",
       "form": "8-K",
       "summary": "Earnings release (Item 2.02)",
@@ -572,30 +516,6 @@
       "summary": "Hood Amy (EVP, Chief Financial Officer) sold 3,387 shares @ $544.80",
       "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000226/0000789019-26-000226-index.htm",
       "accession": "0000789019-26-000226"
-    },
-    {
-      "date": "2026-10-15",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "BURNS URSULA M \u2014 insider filing (options/grant activity)",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000119069926000005/0001190699-26-000005-index.htm",
-      "accession": "0001190699-26-000005"
-    },
-    {
-      "date": "2026-10-15",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "Arora Nikesh \u2014 insider filing (options/grant activity)",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000146823326000011/0001468233-26-000011-index.htm",
-      "accession": "0001468233-26-000011"
-    },
-    {
-      "date": "2026-10-15",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "THAIN JOHN A \u2014 insider filing (options/grant activity)",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000109035526000008/0001090355-26-000008-index.htm",
-      "accession": "0001090355-26-000008"
     },
     {
       "date": "2026-10-08",
@@ -782,46 +702,6 @@
       "accession": "0000950103-26-014402"
     },
     {
-      "date": "2026-09-18",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "4 \u2014 PRIMARY DOCUMENT",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000152532126000010/0001525321-26-000010-index.htm",
-      "accession": "0001525321-26-000010"
-    },
-    {
-      "date": "2026-09-18",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "4 \u2014 PRIMARY DOCUMENT",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000207176126000012/0002071761-26-000012-index.htm",
-      "accession": "0002071761-26-000012"
-    },
-    {
-      "date": "2026-09-18",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "4 \u2014 PRIMARY DOCUMENT",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000177529726000013/0001775297-26-000013-index.htm",
-      "accession": "0001775297-26-000013"
-    },
-    {
-      "date": "2026-09-18",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "4 \u2014 PRIMARY DOCUMENT",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000211186726000013/0002111867-26-000013-index.htm",
-      "accession": "0002111867-26-000013"
-    },
-    {
-      "date": "2026-09-18",
-      "ticker": "UBER",
-      "form": "4",
-      "summary": "4 \u2014 PRIMARY DOCUMENT",
-      "url": "https://www.sec.gov/Archives/edgar/data/1543151/000162620126000020/0001626201-26-000020-index.htm",
-      "accession": "0001626201-26-000020"
-    },
-    {
       "date": "2026-09-17",
       "ticker": "META",
       "form": "4",
@@ -870,5 +750,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 102
+  "filings_count": 87
 }
