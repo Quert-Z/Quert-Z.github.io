@@ -16,15 +16,19 @@ Maintains five JSON files in the repo root:
                           list this file or the Action will not commit it)
 
 Pipeline per stock:
-  prices:      Nasdaq historical -> Nasdaq quote API -> Yahoo quote API ->
-               Stooq CSV, per ticker: each ticker falls through to the next
-               source on its own when a source misses it or serves it stale,
-               so one bad symbol can no longer freeze while the rest update
-               (V/ASML/SPY, Nov 5-13 2026). Nasdaq historical leads because it
-               returns the official close with its true trading date; Stooq's
-               snapshot closes were found on 2026-11-15 to differ from the
-               official closes by up to ~0.9% (META/AMZN/GOOG/MSFT/NFLX/MA)
-               while agreeing on ASML/ISRG/SPGI/SPY, so Stooq is last resort.
+  prices:      dated official closes only, fetched as a multi-session
+               window per ticker: Nasdaq historical -> stockanalysis.com
+               history -> Yahoo chart (daily closes). The Valuation price
+               is the window's newest bar and the graph merges the whole
+               window, so a missed session backfills itself on the next
+               run and the two files can never disagree. The old quote-API
+               leg was removed 2026-11-17: it stamped lastSalePrice (an
+               after-hours print at the 19:05 ET run time) with the UTC
+               run date, which mislabelled sessions, wrote Saturday bars,
+               and — with SPY's only leg the lagging ETF historical feed
+               and an unchecked stale-row fallback — froze SPY at Nov 13.
+               Only bars dated on or before the last completed session
+               (America/New_York) are ever used.
   core inputs: SEC EDGAR companyfacts (recomputed only when a new 10-Q/10-K/20-F
                appears in the submissions feed; otherwise carried forward)
   forward P/E: stockanalysis.com statistics page (same basis as the private
@@ -39,12 +43,13 @@ Pipeline per stock:
                ASML's liabilities are customer prepayments, not borrowings).
   rev growth:  discrete quarterly revenue Y/Y from companyfacts (carried forward)
   debt/equity: companyfacts balance sheet (carried forward)
-  graph:       each weekday's close is appended to the daily history; SMAs and the
-               signal are recomputed (BUY when close < 200-day SMA; HOLD when
-               close > 50-day SMA, otherwise HOLD; SPY: BUY when close < 50-day SMA).
-               A close reported for the SAME date as the last history point
-               replaces it and recomputes, so a better source self-heals the
-               series (the 2026-11-15 Stooq-basis closes were corrected this way)
+  graph:       the fetched window is merged into the daily history each
+               run: missing sessions are inserted, wrong closes corrected,
+               and bars dated after the last completed session or on a
+               non-session day inside the window are dropped; SMAs and the
+               signal are recomputed from the series tail (BUY when close
+               < 200-day SMA; HOLD when close > 50-day SMA, otherwise HOLD;
+               SPY: BUY when close < 50-day SMA).
   fundamental: a new quarter is appended only when EDGAR submissions shows a new
                10-Q/10-K/20-F for that ticker (same trigger as core P/E); TTM values
                are computed from companyfacts discrete quarterly values
@@ -56,8 +61,10 @@ Pipeline per stock:
 
 The JSONs from the previous run are read first; any field that cannot be freshly
 verified keeps its previous value. The script never writes a null over a good
-value and never crashes on a single stock's failure. ASML is carried forward
-whole (IFRS filer; annual 20-F).
+value and never crashes on a single stock's failure. ASML's core inputs are
+carried forward (IFRS filer; annual 20-F), but its price, market cap and core
+P/E are recomputed from the fresh close every run (ASML_SHARES_OUT /
+ASML_NET_DEBT_USD below), so its Valuation row can no longer freeze.
 """
 
 import concurrent.futures
@@ -70,6 +77,7 @@ import datetime
 import urllib.request
 import urllib.error
 import http.cookiejar
+import zoneinfo
 
 UA = {"User-Agent": "QuertZ-Stocks-Dashboard/1.0", "Accept": "application/json"}
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -114,6 +122,17 @@ STOCKS = [
 ]
 BENCHMARK = "SPY"
 
+# ASML's hand-built USD enterprise-value inputs (IFRS filer; refreshed by
+# hand on each 20-F, like its other carried inputs). shares_out is the
+# count implied by the row's market_cap_b at its Nov 2026 prices;
+# net_debt is the USD net debt consistent with the row's core P/E at
+# those prices (EV ~$571B at the 2026-11-13 close of $1,495.16, TTM
+# operating income $17,098,148,000). They exist so ASML's Valuation
+# price / market cap / core P/E recompute from the fresh close every
+# run instead of freezing at the last hand edit (the Nov 13 freeze).
+ASML_SHARES_OUT = 385_940_000
+ASML_NET_DEBT_USD = -6_340_000_000
+
 REV_TAGS = [
     "RevenueFromContractWithCustomerExcludingAssessedTax",
     "RevenueFromContractWithCustomerIncludingAssessedTax",
@@ -153,152 +172,133 @@ def http_get_json(url, timeout=30):
 
 # ---------------------------------------------------------------- prices ---
 
-def fetch_prices_stooq(tickers):
-    syms = ",".join(t.lower() + ".us" for t in tickers)
-    url = f"https://stooq.com/q/l/?s={syms}&f=sd2t2ohlcv&h&e=csv"
-    txt = http_get(url, timeout=20).decode("utf-8", "replace")
+NASDAQ_UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                           "AppleWebKit/537.36 (KHTML, like Gecko) "
+                           "Chrome/120.0 Safari/537.36",
+             "Accept": "application/json"}
+ET = zoneinfo.ZoneInfo("America/New_York")
+HISTORY_DAYS = 45          # window fetched per ticker each run (~31 sessions)
+PRICE_WINDOWS = {}         # ticker -> {date: close} from the latest fetch
+
+
+def et_today():
+    return datetime.datetime.now(ET).date()
+
+
+def is_trading_day(d):
+    return d.weekday() < 5 and d.isoformat() not in NYSE_HOLIDAYS
+
+
+def last_completed_session():
+    """Newest US session whose official close is final, in ET terms.
+    Before 16:05 ET on a trading day that is the previous trading day —
+    a live or after-hours print is never a close."""
+    now = datetime.datetime.now(ET)
+    d = now.date()
+    if is_trading_day(d) and now.time() >= datetime.time(16, 5):
+        return d
+    d -= datetime.timedelta(days=1)
+    while not is_trading_day(d):
+        d -= datetime.timedelta(days=1)
+    return d
+
+
+def fetch_history_nasdaq(ticker, assetclass):
+    """{date: close} for the recent window from Nasdaq's historical
+    endpoint — official closes under their true trading dates."""
+    frm = (et_today() - datetime.timedelta(days=HISTORY_DAYS)).isoformat()
+    url = (f"https://api.nasdaq.com/api/quote/{ticker}/historical"
+           f"?assetclass={assetclass}&fromdate={frm}&limit=250")
+    req = urllib.request.Request(url, headers=NASDAQ_UA)
+    with urllib.request.urlopen(req, timeout=25) as r:
+        d = json.loads(r.read())
     out = {}
-    for line in txt.strip().splitlines()[1:]:
-        p = line.split(",")
-        if len(p) < 7 or not p[0].strip().lower().endswith(".us"):
-            continue
-        t = p[0].strip().split(".")[0].upper()
-        try:
-            out[t] = (float(p[6]), p[1])
-        except ValueError:
-            continue
-    if not out:
-        raise RuntimeError("Stooq returned no rows")
+    for row in d["data"]["tradesTable"]["rows"]:
+        m, dd, y = row["date"].split("/")
+        out[f"{y}-{m}-{dd}"] = float(row["close"].replace(",", "").replace("$", ""))
     return out
 
 
-def fetch_price_nasdaq(ticker):
-    url = f"https://api.nasdaq.com/api/quote/{ticker}/info?assetclass=stocks"
-    d = http_get_json(url, timeout=20)
-    pd = d["data"]["primaryData"]
-    price = float(pd["lastSalePrice"].replace(",", "").replace("$", ""))
-    return price, datetime.date.today().isoformat()
+def fetch_history_sa(ticker):
+    """{date: close} from stockanalysis.com's history API — the fallback
+    the SMA-cross job already trusts for SPY. It includes the
+    in-progress session during market hours; callers cut the window at
+    the last completed session."""
+    url = (f"https://stockanalysis.com/api/symbol/s/{ticker}/history"
+           f"?range=3M&period=Daily")
+    req = urllib.request.Request(url, headers=SA_UA)
+    with urllib.request.urlopen(req, timeout=25) as r:
+        d = json.loads(r.read())
+    return {row["t"]: float(row["c"]) for row in d["data"]}
 
 
-def fetch_price_nasdaq_hist(ticker, assetclass="stocks"):
-    """Latest close + true trading date from Nasdaq's historical endpoint.
-    SPY is served only with assetclass=etf (the quote endpoint rejects it
-    under both assetclass values; verified 2026-11-14)."""
-    frm = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
-    url = (f"https://api.nasdaq.com/api/quote/{ticker}/historical"
-           f"?assetclass={assetclass}&fromdate={frm}&limit=100")
-    d = http_get_json(url, timeout=20)
-    row = d["data"]["tradesTable"]["rows"][0]
-    price = float(row["close"].replace(",", "").replace("$", ""))
-    m, dd, y = row["date"].split("/")
-    return price, f"{y}-{m}-{dd}"
+def fetch_history_yahoo(ticker):
+    """{date: close} from Yahoo's chart API (raw daily closes, true
+    dates). Last of the dated sources."""
+    p2 = int(time.time()) + 86400
+    p1 = p2 - (HISTORY_DAYS + 10) * 86400
+    url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+           f"?period1={p1}&period2={p2}&interval=1d")
+    req = urllib.request.Request(url, headers=NASDAQ_UA)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.loads(r.read())
+    res = d["chart"]["result"][0]
+    closes = res["indicators"]["quote"][0]["close"]
+    out = {}
+    for ts, c in zip(res["timestamp"], closes):
+        if c is not None:
+            day = datetime.datetime.fromtimestamp(
+                ts, datetime.timezone.utc).date().isoformat()
+            out[day] = float(c)
+    return out
 
 
-_yahoo_opener = None
+def fetch_histories(tickers):
+    """Per ticker, the first dated-close source that answers wins:
+    Nasdaq historical -> stockanalysis.com -> Yahoo chart. Returns
+    {ticker: {date: close}}; a ticker no source serves is absent and
+    carries forward. Windows are cut at the last completed session, so
+    an in-progress or future bar can never enter the data."""
+    cutoff = last_completed_session().isoformat()
 
+    def one(t):
+        ac = "etf" if t == BENCHMARK else "stocks"
+        for name, fn in (("Nasdaq", lambda: fetch_history_nasdaq(t, ac)),
+                         ("stockanalysis", lambda: fetch_history_sa(t)),
+                         ("Yahoo", lambda: fetch_history_yahoo(t))):
+            try:
+                w = {d: c for d, c in fn().items() if d <= cutoff}
+                if w:
+                    log(f"history {t}: {name}, {len(w)} bars through {max(w)}")
+                    return t, w
+                log(f"history {t}: {name} returned no completed bars")
+            except Exception as e:
+                log(f"history {t}: {name} failed ({e})")
+        return t, None
 
-def yahoo_results(symbols):
-    """quoteResponse results (regularMarketPrice, forwardPE)."""
-    global _yahoo_opener
-    if _yahoo_opener is None:
-        cj = http.cookiejar.CookieJar()
-        _yahoo_opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
-        _yahoo_opener.addheaders = [("User-Agent", UA["User-Agent"])]
-        _yahoo_opener.open("https://fc.yahoo.com", timeout=20).read()
-    crumb = _yahoo_opener.open(
-        "https://query1.finance.yahoo.com/v1/test/getcrumb", timeout=20).read().decode()
-    url = ("https://query1.finance.yahoo.com/v7/finance/quote?symbols="
-           + ",".join(symbols) + f"&crumb={crumb}"
-           + "&fields=regularMarketPrice,forwardPE")
-    d = json.loads(_yahoo_opener.open(url, timeout=25).read())
-    return d["quoteResponse"]["result"]
+    out = {}
+    for t, w in run_parallel(one, tickers, workers=6):
+        if w:
+            out[t] = w
+    return out
 
 
 def fetch_prices(tickers):
-    """Per-ticker cascade: Nasdaq historical -> Nasdaq quote -> Yahoo ->
-    Stooq. Returns {ticker: (price, date)}.
-
-    Each ticker is filled independently: a ticker that a source misses — or
-    serves stale — falls through to the next source on its own. The old
-    all-or-nothing hand-off froze V, ASML and SPY at Nov 5, 2026 for 9 days.
-
-    Nasdaq historical leads: it returns the official close with its true
-    trading date. On a trading day, a historical row dated before today
-    means the EOD feed is still lagging (seen at 16:05 ET), so the row is
-    held as a fallback while the quote API is tried — its lastSalePrice is
-    the official close once the session has ended, and this job only runs
-    after the close. SPY skips the quote step (Nasdaq rejects it under both
-    assetclass values) and uses assetclass=etf on the historical endpoint.
-
-    Stooq is the last resort, with its vintage guard kept: rows are accepted
-    per ticker only at Stooq's newest vintage, and only when that vintage is
-    current (Nov 10, 2026: Stooq still served Nov 9 closes at 17:05 EST).
-    """
-    today = datetime.date.today()
-    today_s = today.isoformat()
-    trading_today = today.weekday() < 5 and today_s not in NYSE_HOLIDAYS
+    """{ticker: (price, date)} — each ticker's newest completed close,
+    taken from the same dated window the graph merges (PRICE_WINDOWS),
+    so the Valuation price and the graph's last bar always agree.
+    Replaces the old single-point cascade (Nasdaq quote / Yahoo quote /
+    Stooq snapshot), whose dateless last-trade prints were stamped with
+    the UTC run date and froze or mislabelled sessions."""
+    global PRICE_WINDOWS
+    PRICE_WINDOWS = fetch_histories(tickers)
     out = {}
-    stale_hist = {}
-
-    def nasdaq_leg(t):
-        """One ticker's Nasdaq leg: historical first, quote on a miss or a
-        stale historical row (SPY never gets the quote step). Returns
-        (ticker, state, value) with state 'ok' | 'stale' | 'miss' — the
-        same outcomes the old sequential loops produced."""
-        ac = "etf" if t == BENCHMARK else "stocks"
-        stale = None
-        try:
-            price, pdate = fetch_price_nasdaq_hist(t, ac)
-            if trading_today and pdate < today_s:
-                stale = (price, pdate)
-                log(f"prices: Nasdaq hist for {t} still at {pdate}; trying fresher sources")
-            else:
-                return t, "ok", (price, pdate)
-        except Exception as e:
-            log(f"prices: Nasdaq hist failed for {t} ({e})")
-        if t != BENCHMARK:
-            try:
-                return t, "ok", fetch_price_nasdaq(t)
-            except Exception as e:
-                log(f"prices: Nasdaq quote failed for {t} ({e})")
-        return t, ("stale" if stale else "miss"), stale
-
-    for t, state, value in run_parallel(nasdaq_leg, tickers, workers=6):
-        if state == "ok":
-            out[t] = value
-        elif state == "stale":
-            stale_hist[t] = value
+    for t, w in PRICE_WINDOWS.items():
+        d = max(w)
+        out[t] = (round(w[d], 2), d)
     missing = [t for t in tickers if t not in out]
     if missing:
-        try:
-            for r in yahoo_results(missing):
-                t = r["symbol"].upper()
-                if "regularMarketPrice" in r:
-                    out[t] = (float(r["regularMarketPrice"]), today_s)
-                    stale_hist.pop(t, None)
-        except Exception as e:
-            log(f"prices: Yahoo failed ({e})")
-    for t, v in stale_hist.items():
-        if t not in out:
-            out[t] = v
-            log(f"prices: {t} fell back to Nasdaq hist {v[1]} close {v[0]}")
-    still = [t for t in tickers if t not in out]
-    if still:
-        try:
-            stooq = fetch_prices_stooq(still)
-            newest = max(d for _, d in stooq.values())
-            if newest >= today_s or today_s in NYSE_HOLIDAYS:
-                for t in still:
-                    if t in stooq and stooq[t][1] == newest:
-                        out[t] = stooq[t]
-                log(f"prices: Stooq filled {[t for t in still if t in out]} (vintage {newest})")
-            else:
-                log(f"prices: Stooq stale (newest {newest}, today {today_s})")
-        except Exception as e:
-            log(f"prices: Stooq failed ({e})")
-    still = [t for t in tickers if t not in out]
-    if still:
-        log(f"prices: NO SOURCE for {still}; carried forward")
+        log(f"prices: NO DATED SOURCE for {missing}; carried forward")
     if not out:
         raise RuntimeError("all price sources failed")
     return out
@@ -833,38 +833,56 @@ def graph_signal(close, s50, s200, spy=False):
     return "HOLD"
 
 
-def update_graph(prev, prices):
-    """Append each ticker's latest close (when newer than the last history
-    date) and recompute SMA50/SMA200 and the signal. Carries forward on any
-    failure; never appends a duplicate date."""
+def update_graph(prev, prices, windows=None):
+    """Merge each ticker's dated close window into its history and
+    recompute SMA50/SMA200 and the signal from the series tail.
+
+    The merge inserts sessions a previous run missed, corrects closes a
+    weaker source got wrong, and drops bars that cannot be real
+    sessions (dated after the last completed session, or on a
+    weekend/holiday inside the fetched window) — e.g. the
+    run-date-labelled quote prints the old cascade wrote (the Saturday
+    2026-11-14 bars, the 2026-11-17 after-hours prints). With no
+    window, the single (price, date) from prices merges the same way.
+    A ticker with neither carries forward untouched."""
     if not prev or not prev.get("stocks"):
         return prev
+    cutoff = last_completed_session().isoformat()
     for t, entry in prev["stocks"].items():
-        if t not in prices:
-            log(f"graph {t}: no price this run; carried forward")
+        w = dict((windows or {}).get(t) or {})
+        if not w and t in prices and prices[t][0] and prices[t][1]:
+            w = {prices[t][1]: prices[t][0]}
+        if not w:
+            if entry.get("history"):
+                log(f"graph {t}: no window this run; carried forward")
             continue
-        price, pdate = prices[t]
-        if not price or not pdate:
-            continue
-        hist = entry.get("history", [])
-        if hist and pdate < hist[-1]["d"]:
-            continue
-        if hist and pdate == hist[-1]["d"]:
-            if round(float(price), 2) == hist[-1]["c"]:
+        merged = {h["d"]: float(h["c"]) for h in entry.get("history", [])}
+        wmin = min(w)
+        for d in list(merged):
+            if d > cutoff or (d >= wmin and not is_trading_day(
+                    datetime.date.fromisoformat(d))):
+                del merged[d]
+                log(f"graph {t}: dropped non-session bar {d}")
+        for d, c in w.items():
+            if d > cutoff or not is_trading_day(datetime.date.fromisoformat(d)):
                 continue
-            hist[-1] = {"d": pdate, "c": round(float(price), 2)}
-            log(f"graph {t}: corrected {pdate} close to {price}")
-        else:
-            hist.append({"d": pdate, "c": round(float(price), 2)})
-            if len(hist) > GRAPH_HISTORY_CAP:
-                hist = hist[-GRAPH_HISTORY_CAP:]
-            log(f"graph {t}: appended {pdate} close {price}")
+            c = round(float(c), 2)
+            if merged.get(d) != c:
+                log(f"graph {t}: {'corrected' if d in merged else 'backfilled'} "
+                    f"{d} close {c}")
+                merged[d] = c
+        hist = [{"d": d, "c": merged[d]} for d in sorted(merged)]
+        if len(hist) > GRAPH_HISTORY_CAP:
+            hist = hist[-GRAPH_HISTORY_CAP:]
         entry["history"] = hist
-        closes = [h["c"] for h in hist]
-        s50, s200 = sma(closes, 50), sma(closes, 200)
-        entry["latest"] = {"date": pdate, "close": round(float(price), 2),
-                           "sma50": s50, "sma200": s200,
-                           "signal": graph_signal(price, s50, s200, spy=(t == "SPY"))}
+        if hist:
+            closes = [h["c"] for h in hist]
+            s50, s200 = sma(closes, 50), sma(closes, 200)
+            last = hist[-1]
+            entry["latest"] = {"date": last["d"], "close": last["c"],
+                               "sma50": s50, "sma200": s200,
+                               "signal": graph_signal(last["c"], s50, s200,
+                                                      spy=(t == "SPY"))}
     dates = [s["latest"]["date"] for s in prev["stocks"].values() if s.get("latest")]
     if dates:
         prev["as_of"] = max(dates)
@@ -1262,6 +1280,21 @@ def main():
         de = asml_debt_equity()
         if de is not None:
             row["debt_equity"] = de
+        if "ASML" in prices:
+            aprice, adate = prices["ASML"]
+            row["price"] = round(aprice, 2)
+            row["price_date"] = adate
+            row["shares_out"] = ASML_SHARES_OUT
+            row["net_debt"] = ASML_NET_DEBT_USD
+            mc = aprice * ASML_SHARES_OUT
+            row["market_cap_b"] = round(mc / 1e9, 2)
+            if row.get("ttm_op_income"):
+                row["core_pe"] = round(
+                    (mc + ASML_NET_DEBT_USD) / row["ttm_op_income"], 1)
+                if row.get("forward_pe"):
+                    row["avg_pe"] = round(
+                        (row["core_pe"] + row["forward_pe"]) / 2, 1)
+            log(f"ASML: price {row['price']} ({adate}); core P/E recomputed")
         stocks.append(row)
         log("ASML: carried forward (IFRS filer); forward P/E + rev growth + D/E refreshed")
     else:
@@ -1277,7 +1310,8 @@ def main():
         "as_of": as_of,
         "stocks": stocks,
         "benchmark": {"ticker": BENCHMARK,
-                      "price": round(spy_price, 2) if spy_price else None},
+                      "price": (round(spy_price, 2) if spy_price
+                                else (prev_data.get("benchmark") or {}).get("price"))},
     }
     json.dump(data, open(JSON_PATH, "w"), indent=2)
     log(f"wrote {JSON_PATH} as_of={as_of}")
@@ -1287,7 +1321,7 @@ def main():
 
     # --- Graph Analysis: append today's closes, recompute SMAs/signals
     if prev_graph:
-        update_graph(prev_graph, prices)
+        update_graph(prev_graph, prices, PRICE_WINDOWS)
         qqq_fpe = sa_qqq_forward_pe()
         if not qqq_fpe:
             qqq_fpe = yahoo.get("QQQ", {}).get("forwardPE")
