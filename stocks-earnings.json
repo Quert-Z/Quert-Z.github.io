@@ -54,6 +54,38 @@
   ],
   "filings": [
     {
+      "date": "2026-11-16",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "4 \u2014 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526464050/0001193125-26-464050-index.htm",
+      "accession": "0001193125-26-464050"
+    },
+    {
+      "date": "2026-11-16",
+      "ticker": "GOOG",
+      "form": "4",
+      "summary": "4 \u2014 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526463983/0001193125-26-463983-index.htm",
+      "accession": "0001193125-26-463983"
+    },
+    {
+      "date": "2026-11-16",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000044/0001018724-26-000044-index.htm",
+      "accession": "0001018724-26-000044"
+    },
+    {
+      "date": "2026-11-16",
+      "ticker": "MSFT",
+      "form": "4",
+      "summary": "4 \u2014 STATEMENT OF CHANGES IN BENEFICIAL OWNERSHIP OF SECURITIES",
+      "url": "https://www.sec.gov/Archives/edgar/data/789019/000078901926000236/0000789019-26-000236-index.htm",
+      "accession": "0000789019-26-000236"
+    },
+    {
       "date": "2026-11-12",
       "ticker": "META",
       "form": "4",
@@ -750,5 +782,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 87
+  "filings_count": 91
 }
