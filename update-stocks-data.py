@@ -18,7 +18,12 @@ Maintains five JSON files in the repo root:
 Pipeline per stock:
   prices:      dated official closes only, fetched as a multi-session
                window per ticker: Nasdaq historical -> stockanalysis.com
-               history -> Yahoo chart (daily closes). The Valuation price
+               history -> Yahoo chart (daily closes). A source wins only
+               if its window reaches the last completed session; a source
+               that answers but ends early falls through to the next
+               (2026-11-18: Nasdaq's EOD feed publishes overnight, so the
+               previous evening's run accepted its Nov 16 window and the
+               site stayed a session stale). The Valuation price
                is the window's newest bar and the graph merges the whole
                window, so a missed session backfills itself on the next
                run and the two files can never disagree. The old quote-API
@@ -254,26 +259,44 @@ def fetch_history_yahoo(ticker):
 
 
 def fetch_histories(tickers):
-    """Per ticker, the first dated-close source that answers wins:
-    Nasdaq historical -> stockanalysis.com -> Yahoo chart. Returns
-    {ticker: {date: close}}; a ticker no source serves is absent and
-    carries forward. Windows are cut at the last completed session, so
-    an in-progress or future bar can never enter the data."""
+    """Per ticker, dated-close sources in priority order: Nasdaq
+    historical -> stockanalysis.com -> Yahoo chart. A source wins only
+    if its window reaches the last completed session — a source that
+    answers but ends early falls through to the next one (Nasdaq's EOD
+    feed publishes overnight, so at the 19:05 ET run it can still end
+    at the previous session; on 2026-11-17 it did, and the site stayed
+    a session stale). If no source reaches the last completed session,
+    the window ending latest wins, so the freshest available data is
+    still used. Returns {ticker: {date: close}}; a ticker no source
+    serves is absent and carries forward. Windows are cut at the last
+    completed session, so an in-progress or future bar can never enter
+    the data."""
     cutoff = last_completed_session().isoformat()
 
     def one(t):
         ac = "etf" if t == BENCHMARK else "stocks"
+        best = None
         for name, fn in (("Nasdaq", lambda: fetch_history_nasdaq(t, ac)),
                          ("stockanalysis", lambda: fetch_history_sa(t)),
                          ("Yahoo", lambda: fetch_history_yahoo(t))):
             try:
                 w = {d: c for d, c in fn().items() if d <= cutoff}
-                if w:
+                if not w:
+                    log(f"history {t}: {name} returned no completed bars")
+                    continue
+                if max(w) >= cutoff:
                     log(f"history {t}: {name}, {len(w)} bars through {max(w)}")
                     return t, w
-                log(f"history {t}: {name} returned no completed bars")
+                log(f"history {t}: {name} ends {max(w)}, before the last "
+                    f"completed session {cutoff} — trying the next source")
+                if best is None or max(w) > max(best[1]):
+                    best = (name, w)
             except Exception as e:
                 log(f"history {t}: {name} failed ({e})")
+        if best is not None:
+            log(f"history {t}: no source reached {cutoff}; using {best[0]}, "
+                f"{len(best[1])} bars through {max(best[1])}")
+            return t, best[1]
         return t, None
 
     out = {}
