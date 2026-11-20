@@ -54,6 +54,30 @@
   ],
   "filings": [
     {
+      "date": "2026-11-19",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326017904/0000950103-26-017904-index.htm",
+      "accession": "0000950103-26-017904"
+    },
+    {
+      "date": "2026-11-19",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326017902/0000950103-26-017902-index.htm",
+      "accession": "0000950103-26-017902"
+    },
+    {
+      "date": "2026-11-19",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326017900/0000950103-26-017900-index.htm",
+      "accession": "0000950103-26-017900"
+    },
+    {
       "date": "2026-11-17",
       "ticker": "META",
       "form": "4",
@@ -926,5 +950,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 109
+  "filings_count": 112
 }
