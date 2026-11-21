@@ -54,6 +54,14 @@
   ],
   "filings": [
     {
+      "date": "2026-11-20",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000056/0001018724-26-000056-index.htm",
+      "accession": "0001018724-26-000056"
+    },
+    {
       "date": "2026-11-19",
       "ticker": "META",
       "form": "4",
@@ -950,5 +958,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 112
+  "filings_count": 113
 }
