@@ -54,6 +54,14 @@
   ],
   "filings": [
     {
+      "date": "2026-11-23",
+      "ticker": "META",
+      "form": "8-K",
+      "summary": "8-K \u2014 8-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026075541/0001628280-26-075541-index.htm",
+      "accession": "0001628280-26-075541"
+    },
+    {
       "date": "2026-11-20",
       "ticker": "AMZN",
       "form": "4",
@@ -958,5 +966,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 113
+  "filings_count": 114
 }
