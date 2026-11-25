@@ -54,6 +54,62 @@
   ],
   "filings": [
     {
+      "date": "2026-11-24",
+      "ticker": "GOOG",
+      "form": "8-K",
+      "summary": "8-K \u2014 8-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526475973/0001193125-26-475973-index.htm",
+      "accession": "0001193125-26-475973"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000137454526000012/0001374545-26-000012-index.htm",
+      "accession": "0001374545-26-000012"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000202481326000012/0002024813-26-000012-index.htm",
+      "accession": "0002024813-26-000012"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000193600626000032/0001936006-26-000032-index.htm",
+      "accession": "0001936006-26-000032"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000155797926000010/0001557979-26-000010-index.htm",
+      "accession": "0001557979-26-000010"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000163990226000010/0001639902-26-000010-index.htm",
+      "accession": "0001639902-26-000010"
+    },
+    {
+      "date": "2026-11-24",
+      "ticker": "AMZN",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000058/0001018724-26-000058-index.htm",
+      "accession": "0001018724-26-000058"
+    },
+    {
       "date": "2026-11-23",
       "ticker": "META",
       "form": "8-K",
@@ -966,5 +1022,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 114
+  "filings_count": 121
 }
