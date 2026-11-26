@@ -54,6 +54,14 @@
   ],
   "filings": [
     {
+      "date": "2026-11-25",
+      "ticker": "META",
+      "form": "4",
+      "summary": "4 \u2014 FORM 4",
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000095010326018246/0000950103-26-018246-index.htm",
+      "accession": "0000950103-26-018246"
+    },
+    {
       "date": "2026-11-24",
       "ticker": "GOOG",
       "form": "8-K",
@@ -1022,5 +1030,5 @@
       "accession": "0000789019-26-000220"
     }
   ],
-  "filings_count": 121
+  "filings_count": 122
 }
