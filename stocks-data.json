@@ -15,8 +15,8 @@
       "market_cap_b": 3297.56,
       "core_pe": 20.1,
       "rev_growth_yoy": 24.7,
-      "forward_pe": 19.69,
-      "avg_pe": 19.9
+      "forward_pe": 19.27,
+      "avg_pe": 19.7
     },
     {
       "ticker": "META",
@@ -32,8 +32,8 @@
       "last_acc": "0001628280-26-066773",
       "market_cap_b": 1550.95,
       "core_pe": 19.6,
-      "forward_pe": 18.65,
-      "avg_pe": 19.1
+      "forward_pe": 18.76,
+      "avg_pe": 19.2
     },
     {
       "ticker": "AMZN",
@@ -49,7 +49,7 @@
       "last_acc": "0001018724-26-000040",
       "market_cap_b": 2632.51,
       "core_pe": 25.9,
-      "forward_pe": 24.75,
+      "forward_pe": 24.71,
       "avg_pe": 25.3
     },
     {
@@ -66,8 +66,8 @@
       "last_acc": "0001193125-26-436133",
       "market_cap_b": 3638.22,
       "core_pe": 22.1,
-      "forward_pe": 23.58,
-      "avg_pe": 22.8
+      "forward_pe": 23.6,
+      "avg_pe": 22.9
     },
     {
       "ticker": "NFLX",
@@ -133,7 +133,7 @@
       "last_acc": "0000064040-26-000058",
       "market_cap_b": 135.78,
       "core_pe": 19.4,
-      "forward_pe": 23.85,
+      "forward_pe": 23.75,
       "avg_pe": 21.6
     },
     {
@@ -143,8 +143,8 @@
       "currency": "USD",
       "market_cap_b": 502.91,
       "core_pe": 29.0,
-      "forward_pe": 21.08,
-      "avg_pe": 25.0,
+      "forward_pe": 19.81,
+      "avg_pe": 24.4,
       "rev_growth_yoy": 22.5,
       "debt_equity": 22.4,
       "ttm_op_income": 17098148000,

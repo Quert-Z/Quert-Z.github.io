@@ -3,9 +3,9 @@
   "notes": {
     "source": "Daily closes Nov 2023-Oct 30 2026 from the Nasdaq historical API (SPY from stockanalysis.com, which the Nasdaq API 400s for). Seeded from the dashboard's own Oct 30, 2026 snapshot; the GitHub Action appends each weekday's close and recomputes SMAs.",
     "qqq_forward_pe": {
-      "value": 17.95,
+      "value": 18.23,
       "source": "stockanalysis.com",
-      "as_of": "2026-11-26",
+      "as_of": "2026-11-27",
       "note": "Constant used by the chat's 'good buy' answers for comparison. Refreshed by the updater each run."
     },
     "spy_close_note": "SPY Oct 30 close is $755.72 (stockanalysis.com). The SMA-cross cron's Nasdaq-quote source reported $755.69 the same day - a 3-cent source discrepancy, flagged Nov 5, 2026.",
